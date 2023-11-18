@@ -1,0 +1,47 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      -master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    -  name: Setup .NET 8
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: '8.0'
+
+    -  name: Build
+       run: |
+         dotnet build --configuration Release --no-restore
+         
+  deploy:
+    runs-on: windows-latest
+
+    needs: build
+    if: gihub.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+    -  name: Checkout repository
+       uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0'
+
+    - name: Publish Artifact
+      run: |
+        dotnet publish -c Release -o publish
+      working-directory: ./PLNTZ/BackendApp
+
+    - name: Deploy to Azure (example, adjust as needed)
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: your-azure-app
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+         
