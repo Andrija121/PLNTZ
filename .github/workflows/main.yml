@@ -23,7 +23,7 @@ jobs:
     runs-on: windows-latest
 
     needs: build
-    if: gihub.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
     -  name: Checkout repository
