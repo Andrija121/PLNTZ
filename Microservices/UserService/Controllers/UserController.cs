@@ -1,33 +1,74 @@
+
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using UserService.Data;
+using UserService.Identity;
+using UserService.Services;
 
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly IUserService _userService;
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        public UserController(IUserService userService) => _userService = userService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserById(int userId)
         {
-            _logger = logger;
+            var user = await _userService.GetUserByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] ApplicationUser user)
+        {
+            var createdUser = await _userService.CreateUserAsync(user);
+            return CreatedAtAction(nameof(GetUserById), new { userId = createdUser.Id }, createdUser);
+        }
+
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> EditUser(int userId, [FromBody] ApplicationUser editedUser)
+        {
+            var existingUser = await _userService.GetUserByIdAsync(userId);
+
+            if (existingUser == null)
+                return NotFound();
+
+            existingUser.FirstName = editedUser.FirstName;
+            existingUser.LastName = editedUser.LastName;
+            existingUser.Birthday = editedUser.Birthday;
+            existingUser.Last_seen = editedUser.Last_seen;
+            existingUser.IsActive = editedUser.IsActive;
+            existingUser.RoleId = editedUser.RoleId;
+            existingUser.AddressId = editedUser.AddressId;
+
+            await _userService.UpdateUserAsync(existingUser);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var success = await _userService.DeleteUserAsync(userId);
+
+            if (success)
+                return NoContent();
+
+            return NotFound();
         }
     }
 }
