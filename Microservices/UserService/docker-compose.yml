@@ -1,0 +1,36 @@
+﻿version: '3.8'
+
+services:
+  user-service:
+    image: userservice-image:tag
+    build:
+      context: .
+    #  dockerfile: Dockerfile
+    environment:
+      - DbServer=db
+      - DbPort=1433
+      - DbUser="sa"
+      - Password="test@123"
+      - DbName="master"
+    container_name: userservice
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    # depends_on:
+    #   - db
+    # networks:
+    #   - backend
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: db_user
+    environment:
+      SA_PASSWORD: "test@123"
+      ACCEPT_EULA: Y
+    ports:
+      - "1401:1433"
+    # networks:
+    #   - backend
+
+# networks:
+#   backend:
+#     driver: bridge

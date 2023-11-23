@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Identity
 {
-    [Table("users")]
+    //[Table("users")]
     public class ApplicationUser : IdentityUser<int>
     {
         public string FirstName { get; set; }
