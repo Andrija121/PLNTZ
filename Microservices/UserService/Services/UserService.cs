@@ -8,7 +8,6 @@ using UserService.Identity;
 
 namespace UserService.Services
 {
-    [Table("users")]
     public class UserService(UserDBContext dbContext) : IUserService
     {
         private readonly UserDBContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));

@@ -5,7 +5,7 @@ services:
     image: userservice-image:tag
     build:
       context: .
-    #  dockerfile: Dockerfile
+      #dockerfile: Dockerfile
     environment:
       - DbServer=db
       - DbPort=1433
@@ -15,11 +15,10 @@ services:
     container_name: userservice
     ports:
       - "8080:8080"
-      - "8081:8081"
-    # depends_on:
-    #   - db
-    # networks:
-    #   - backend
+    depends_on:
+      - db
+    networks:
+      - backend
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: db_user
@@ -28,9 +27,9 @@ services:
       ACCEPT_EULA: Y
     ports:
       - "1401:1433"
-    # networks:
-    #   - backend
+    networks:
+      - backend
 
-# networks:
-#   backend:
-#     driver: bridge
+networks:
+  backend:
+    driver: bridge

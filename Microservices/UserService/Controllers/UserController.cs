@@ -8,12 +8,10 @@ using UserService.Services;
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    [Route("api/v1/[controller]")]
+    public class UserController(IUserService userService) : ControllerBase()
     {
-        private readonly IUserService _userService;
-
-        public UserController(IUserService userService) => _userService = userService;
+        private readonly IUserService _userService = userService;
 
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserById(int userId)
@@ -26,6 +24,7 @@ namespace UserService.Controllers
         }
 
         [HttpGet]
+        [Route("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -61,7 +60,7 @@ namespace UserService.Controllers
         }
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        public async Task<IActionResult> DeleteUser([FromQuery]int userId)
         {
             var success = await _userService.DeleteUserAsync(userId);
 

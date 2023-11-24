@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using UserService.Data;
 using UserService.Services;
+using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 
 namespace UserService
 {
@@ -19,12 +21,20 @@ namespace UserService
             var port = Configuration["Dbport"];
             var user = Configuration["Dbuser"];
 
+
+
             var connString = String.Format("Server={0},{1};Database={2};User={3};Password={4};TrustServerCertificate=True", server, port, name, user, password);
             Console.WriteLine($"Connection String: {connString}");
             services.AddDbContext<UserDBContext>(options =>
             options.UseSqlServer(connString));
+            services.AddMvc();
 
-            services.AddDbContext<DbContext, UserDBContext>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Api ", Version = "v1" });
+            });
+
+            //services.AddDbContext<DbContext, UserDBContext>();
             services.AddScoped<IUserService, Services.UserService>();
             services.AddControllers();
         }
@@ -40,6 +50,8 @@ namespace UserService
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseSwagger();
 
             //app.UseHttpsRedirection();
             //ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);
@@ -57,15 +69,19 @@ namespace UserService
             app.UseRouting();
 
             app.UseAuthorization();
-            Console.WriteLine("Database migration NOT YET applied successfully.");
-            context.Database.Migrate();
-            Console.WriteLine("Database migration applied successfully.");
+            Debug.WriteLine("Database migration NOT YET applied successfully.");
+            //context.Database.Migrate();
+            Debug.WriteLine("Database migration applied successfully.");
 
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=ApplicationUsers}/{action=Index}/{id?}"
-                ); ; });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            app.UseEndpoints(endpoints => 
+            {
+                endpoints.MapSwagger();
+                endpoints.MapControllers();
+            });
         }
     }
 }
