@@ -10,6 +10,10 @@ services:
       ACCEPT_EULA: Y
     ports:
       - "1401:1433"
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/mssql/log
+      - ./secrets:/var/opt/mssql/secrets  
     networks:
       - backend
   

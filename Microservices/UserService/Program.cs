@@ -67,10 +67,6 @@ public class Program
         {
             logging.AddConsole();
         })
-        .ConfigureServices((hostContext, services) =>
-        {
-            services.AddDbContext<UserDBContext>(options => options.UseSqlServer(hostContext.Configuration.GetConnectionString("UserDB")));
-        })
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder.UseStartup<Startup>();

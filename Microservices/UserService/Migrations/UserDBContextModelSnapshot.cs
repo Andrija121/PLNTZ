@@ -115,7 +115,7 @@ namespace UserService.Migrations
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 11, 24, 14, 29, 16, 806, DateTimeKind.Utc).AddTicks(8066),
+                            Last_seen = new DateTime(2023, 11, 24, 19, 39, 57, 377, DateTimeKind.Utc).AddTicks(8115),
                             Password = "andrija123",
                             RoleId = 1
                         });

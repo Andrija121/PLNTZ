@@ -12,8 +12,8 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20231124142917_InitalCreate")]
-    partial class InitalCreate
+    [Migration("20231124193957_volumedbv1")]
+    partial class volumedbv1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,7 +118,7 @@ namespace UserService.Migrations
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 11, 24, 14, 29, 16, 806, DateTimeKind.Utc).AddTicks(8066),
+                            Last_seen = new DateTime(2023, 11, 24, 19, 39, 57, 377, DateTimeKind.Utc).AddTicks(8115),
                             Password = "andrija123",
                             RoleId = 1
                         });

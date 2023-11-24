@@ -18,7 +18,7 @@ namespace UserService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserDBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("UserDB")));
+            options.UseSqlServer(Configuration.GetConnectionString("UserDB"),sqlServerOption => sqlServerOption.EnableRetryOnFailure()));
 
             services.AddTransient<IUserRepository,UserRepository>();
             services.AddMvc();
@@ -31,6 +31,7 @@ namespace UserService
             services.AddScoped<IUserService, Services.UserService>();
             services.AddControllers();
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserDBContext context)
         {

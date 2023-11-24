@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UserService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class volumedbv1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,7 @@ namespace UserService.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AddressId", "Birthday", "FirstName", "IsActive", "LastName", "Last_seen", "Password", "RoleId" },
-                values: new object[] { 1, 1, new DateOnly(2001, 1, 26), "Andrija", true, "Hanga", new DateTime(2023, 11, 24, 14, 29, 16, 806, DateTimeKind.Utc).AddTicks(8066), "andrija123", 1 });
+                values: new object[] { 1, 1, new DateOnly(2001, 1, 26), "Andrija", true, "Hanga", new DateTime(2023, 11, 24, 19, 39, 57, 377, DateTimeKind.Utc).AddTicks(8115), "andrija123", 1 });
         }
 
         /// <inheritdoc />
