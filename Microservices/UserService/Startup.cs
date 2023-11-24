@@ -19,6 +19,7 @@ namespace UserService
         {
             services.AddDbContext<UserDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("UserDB")));
+
             services.AddTransient<IUserRepository,UserRepository>();
             services.AddMvc();
 
@@ -45,14 +46,11 @@ namespace UserService
 
             app.UseSwagger();
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
-            Debug.WriteLine("Database migration NOT YET applied successfully.");
-            context.Database.Migrate();
-            Debug.WriteLine("Database migration applied successfully.");
+
+
 
             app.UseSwaggerUI(c =>
             {
