@@ -12,28 +12,28 @@ namespace UserService.Services
     {
         private readonly UserDBContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            _dbContext.ApplicationUsers.Add(user);
+            _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }
 
-        public async Task<List<ApplicationUser>> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _dbContext.ApplicationUsers.ToListAsync();
+            return await _dbContext.Users.ToListAsync();
         }
 
-        public async Task<ApplicationUser> GetUserByIdAsync(int userId)
+        public async Task<User> GetUserByIdAsync(int userId)
         {
-            var user = await _dbContext.ApplicationUsers.FindAsync(userId);
+            var user = await _dbContext.Users.FindAsync(userId);
 
             return user ?? throw new Exception($"User with {userId} was not found");
         }
 
-        public async Task<ApplicationUser> UpdateUserAsync(ApplicationUser user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            var existingUser = await _dbContext.ApplicationUsers.FindAsync(user.Id);
+            var existingUser = await _dbContext.Users.FindAsync(user.Id);
 
             if (existingUser == null)
             {
@@ -55,8 +55,8 @@ namespace UserService.Services
 
         public async Task<bool> DeleteUserAsync(int userId)
         {
-            var user = await _dbContext.ApplicationUsers.FindAsync(userId) ?? throw new Exception($"User with ID {userId} not found");
-            _dbContext.ApplicationUsers.Remove(user);
+            var user = await _dbContext.Users.FindAsync(userId) ?? throw new Exception($"User with ID {userId} not found");
+            _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
 
             return true;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Identity
 {
-    public class ApplicationUser
+    public class User
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -15,15 +15,9 @@ namespace UserService.Identity
 
         public int RoleId { get; set; } 
         public int AddressId { get; set; } 
-
-        public virtual Role Role { get; set; }
-        public virtual Address Address { get; set; }
-
-        public ApplicationUser()
+        public User()
         {
             IsActive = true;
         }
-
-        public override string ToString() => base.ToString();
     }
 }

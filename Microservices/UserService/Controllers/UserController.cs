@@ -13,7 +13,7 @@ namespace UserService.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId}", Name ="Get")]
         public async Task<IActionResult> GetUserById(int userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
@@ -24,7 +24,6 @@ namespace UserService.Controllers
         }
 
         [HttpGet]
-        [Route("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -32,14 +31,14 @@ namespace UserService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] ApplicationUser user)
+        public async Task<IActionResult> CreateUser([FromBody] User user)
         {
             var createdUser = await _userService.CreateUserAsync(user);
             return CreatedAtAction(nameof(GetUserById), new { userId = createdUser.Id }, createdUser);
         }
 
         [HttpPut("{userId}")]
-        public async Task<IActionResult> EditUser(int userId, [FromBody] ApplicationUser editedUser)
+        public async Task<IActionResult> EditUser(int userId, [FromBody] User editedUser)
         {
             var existingUser = await _userService.GetUserByIdAsync(userId);
 
@@ -60,7 +59,7 @@ namespace UserService.Controllers
         }
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteUser([FromQuery]int userId)
+        public async Task<IActionResult> DeleteUser(int userId)
         {
             var success = await _userService.DeleteUserAsync(userId);
 

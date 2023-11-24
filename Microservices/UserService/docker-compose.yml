@@ -5,13 +5,13 @@ services:
     image: userservice-image:tag
     build:
       context: .
-      #dockerfile: Dockerfile
+      dockerfile: Dockerfile
     environment:
       - DbServer=db
-      - DbPort=1433
-      - DbUser="sa"
-      - Password="test@123"
-      - DbName="master"
+      - DbPort=1401
+      - DbUser=sa
+      - Password=test@123
+      - DbName=user_service
     container_name: userservice
     ports:
       - "8080:8080"
