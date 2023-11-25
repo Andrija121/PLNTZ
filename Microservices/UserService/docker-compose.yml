@@ -36,7 +36,18 @@ services:
     networks:
       - backend
 
-
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: ../../APIGateway
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8080
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge
+
+
