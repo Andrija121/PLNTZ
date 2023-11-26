@@ -1,0 +1,53 @@
+﻿version: '3.8'
+
+services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: db_user
+    environment:
+      SA_PASSWORD: "test@123"
+      ACCEPT_EULA: Y
+    ports:
+      - "1401:1433"
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/mssql/log
+      - ./secrets:/var/opt/mssql/secrets  
+    networks:
+      - backend
+  
+  user-service:
+    depends_on:
+      - db
+    image: userservice-image:tag
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DbServer=db
+      - DbPort=1401
+      - DbUser=sa
+      - Password=test@123
+      - DbName=user_service
+    container_name: userservice
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: ../../APIGateway
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8080
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+
+

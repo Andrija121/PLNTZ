@@ -1,0 +1,34 @@
+{
+  "Routes": [
+    //User Web API
+    {
+      "UpstreamPathTemplate": "/api/v1/User",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v1/User"
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/User/{userId}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v1/User{usedId}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:800"
+  }
+}
