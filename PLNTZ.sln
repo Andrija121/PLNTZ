@@ -3,21 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendApp", "BackendApp\BackendApp.csproj", "{BFB514D3-3206-4318-BD6E-CB2CA0EA0471}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{AFB9C51B-210A-401F-8E0F-B717FC81D3CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{BF00C3CA-9AB1-4DB2-9FAE-805D0EC746C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{549A5405-FCFE-4708-955E-D2E19A77D446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "Microservices\UserService\UserService.csproj", "{669A9DDA-6FD5-4382-AB9C-FD9548F8CEDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "Microservices\UserService\UserService.csproj", "{669A9DDA-6FD5-4382-AB9C-FD9548F8CEDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationService", "Microservices\LocationService\LocationService.csproj", "{34DADCFD-9798-462A-9EE3-EC52647FED81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationService", "Microservices\LocationService\LocationService.csproj", "{34DADCFD-9798-462A-9EE3-EC52647FED81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendshipService", "Microservices\FriendshipService\FriendshipService.csproj", "{C76995DE-021E-4445-AC16-5980DFF302A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendshipService", "Microservices\FriendshipService\FriendshipService.csproj", "{C76995DE-021E-4445-AC16-5980DFF302A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService", "Microservices\MessagingService\MessagingService.csproj", "{DC75D40C-1300-46A4-8298-BD3A01D75C21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingService", "Microservices\MessagingService\MessagingService.csproj", "{DC75D40C-1300-46A4-8298-BD3A01D75C21}"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2445375B-F56B-4F5B-BA2D-EAE4EF5B8C2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateway", "APIGateway", "{B13E484B-35ED-4FE8-A860-4D031FAE403F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{E4D1665B-2E84-4D0E-859F-D2BEEA849786}"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +38,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BFB514D3-3206-4318-BD6E-CB2CA0EA0471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFB514D3-3206-4318-BD6E-CB2CA0EA0471}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFB514D3-3206-4318-BD6E-CB2CA0EA0471}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFB514D3-3206-4318-BD6E-CB2CA0EA0471}.Release|Any CPU.Build.0 = Release|Any CPU
 		{549A5405-FCFE-4708-955E-D2E19A77D446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{549A5405-FCFE-4708-955E-D2E19A77D446}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{549A5405-FCFE-4708-955E-D2E19A77D446}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,6 +58,14 @@ Global
 		{DC75D40C-1300-46A4-8298-BD3A01D75C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC75D40C-1300-46A4-8298-BD3A01D75C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC75D40C-1300-46A4-8298-BD3A01D75C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2445375B-F56B-4F5B-BA2D-EAE4EF5B8C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2445375B-F56B-4F5B-BA2D-EAE4EF5B8C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2445375B-F56B-4F5B-BA2D-EAE4EF5B8C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2445375B-F56B-4F5B-BA2D-EAE4EF5B8C2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4D1665B-2E84-4D0E-859F-D2BEEA849786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4D1665B-2E84-4D0E-859F-D2BEEA849786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4D1665B-2E84-4D0E-859F-D2BEEA849786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4D1665B-2E84-4D0E-859F-D2BEEA849786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +76,7 @@ Global
 		{34DADCFD-9798-462A-9EE3-EC52647FED81} = {AFB9C51B-210A-401F-8E0F-B717FC81D3CC}
 		{C76995DE-021E-4445-AC16-5980DFF302A6} = {AFB9C51B-210A-401F-8E0F-B717FC81D3CC}
 		{DC75D40C-1300-46A4-8298-BD3A01D75C21} = {AFB9C51B-210A-401F-8E0F-B717FC81D3CC}
+		{E4D1665B-2E84-4D0E-859F-D2BEEA849786} = {B13E484B-35ED-4FE8-A860-4D031FAE403F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AF6BBDB-02DC-48D8-ABD9-572415B5BAB9}
