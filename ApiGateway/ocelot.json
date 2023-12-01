@@ -8,7 +8,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service",
+          "Host": "user-service", //user-service
           "Port": 8080
         }
       ],
@@ -21,14 +21,14 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service",
+          "Host": "user-service", //user-service
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/api/v1/User{usedId}"
+      "DownstreamPathTemplate": "/api/v1/User/{userId}"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:800"
+    "BaseUrl": "http://localhost:8001"
   }
 }

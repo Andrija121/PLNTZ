@@ -13,7 +13,7 @@ services:
     volumes:
       - ./data:/var/opt/mssql/data
       - ./log:/var/mssql/log
-      - ./secrets:/var/opt/mssql/secrets  
+      - ./secrets:/var/opt/mssql/secrets 
     networks:
       - backend
   
@@ -32,7 +32,7 @@ services:
       - DbName=user_service
     container_name: userservice
     ports:
-      - "8080:8080"
+      - "8080:80"
     networks:
       - backend
 
