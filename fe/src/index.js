@@ -1,31 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
-import "./index.css";
-import App from "./App";
+import "./styles/index.css";
 import reportWebVitals from "./reportWebVitals";
-
-const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
-
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
-};
-
-export default LoginButton;
+import { BrowserRouter } from "react-router-dom";
+import { App } from "./App";
+import { Auth0ProviderWithNavigate } from "./auth0-provider-with-navigate";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Auth0Provider
-    domain="dev-plntz.eu.auth0.com"
-    clientId="p2iM1l3tvMEG5Bf28DqZ1BPUS9tCJbTQ"
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-    }}
-  >
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Auth0Provider>
+  <React.StrictMode>
+    <BrowserRouter>
+      <Auth0ProviderWithNavigate>
+        <App></App>
+      </Auth0ProviderWithNavigate>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
