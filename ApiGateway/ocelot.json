@@ -2,6 +2,7 @@
   "Routes": [
     //User Web API
     {
+      //"AuthenticationOptions": {"AuthenticationProviderKey": "TestKey", "AllowedScopes": []},
       "UpstreamPathTemplate": "/api/v1/User",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
 
