@@ -2,12 +2,13 @@ import { callExternalApi } from "./external-api.service";
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 
-export const getPublicResource = async () => {
+export const getPublicResource = async (accessToken) => {
   const config = {
     url: `${apiServerUrl}/api/v1/User`,
     method: "GET",
     headers: {
       "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   };
 
