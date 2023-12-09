@@ -21,6 +21,10 @@
     {
       "UpstreamPathTemplate": "/api/v1/User/{userId}",
       "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
 
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -32,8 +36,17 @@
       "DownstreamPathTemplate": "/api/v1/User/{userId}"
     }
   ],
-  
+
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001"
+    "BaseUrl": "http://localhost:8001",
+    "RequestIdKey": "OcRequestId",
+    "AdministrationPath": "/admin",
+    "CorsOptions": {
+      "PolicyName": "AllowReactFrontend",
+      "AllowedOrigins": [ "http://localhost:3000" ],
+      "AllowedHeaders": [ "*" ],
+      "AllowedMethods": [ "*" ],
+      "AllowCredentials": true
+    }
   }
 }

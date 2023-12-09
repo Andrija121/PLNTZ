@@ -4,7 +4,7 @@ const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 
 export const getPublicResource = async () => {
   const config = {
-    url: `${apiServerUrl}/api/messages/public`,
+    url: `${apiServerUrl}/api/v1/User`,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -21,7 +21,7 @@ export const getPublicResource = async () => {
 
 export const getProtectedResource = async (accessToken) => {
   const config = {
-    url: `${apiServerUrl}/api/messages/protected`,
+    url: `${apiServerUrl}/api/v1/User/2`,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -29,7 +29,11 @@ export const getProtectedResource = async (accessToken) => {
     },
   };
 
-  const { data, error } = await callExternalApi({ config });
+  const { data, error, statusCode } = await callExternalApi({ config });
+
+  if (statusCode === 401) {
+    console.log("unAUTHORIZED");
+  }
 
   return {
     data: data || null,

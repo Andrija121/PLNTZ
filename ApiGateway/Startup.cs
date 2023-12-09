@@ -17,7 +17,15 @@ namespace ApiGateway
             string authority = $"https://{Configuration["Auth0:Domain"]}/";
             var key = Encoding.ASCII.GetBytes("SecureKeyRequiredForValidationAdmin");
             string audience = Configuration["Auth0:Audience"]?.ToString() ?? "defaultAudience";
-            //var authenticationProviderKey = "TestKey";
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactFrontend",
+                    builder => builder.WithOrigins("http://localhost:3000")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader()
+                                      .AllowCredentials());
+            });
 
             services.AddAuthentication(options =>
             {
@@ -36,10 +44,6 @@ namespace ApiGateway
                     ValidateIssuer = false,
                     ValidateAudience = false,
                 };
-                //options.TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    ValidateAudience = true,
-                //};
             });
             services.AddOcelot(Configuration);
 
@@ -52,6 +56,7 @@ namespace ApiGateway
             }
 
             app.UseRouting();
+            app.UseCors("AllowReactFrontend");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseOcelot();
