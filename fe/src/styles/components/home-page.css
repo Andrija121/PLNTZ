@@ -1,0 +1,37 @@
+.container{
+    width: 100%;
+    /* tbd */
+    height: 70vh; 
+    background-color: black;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container h1{
+    font-size: 100px;
+    font-weight: 600;
+    color: white;
+}
+body {
+    /* Hide scrollbars */
+    overflow: hidden;
+}
+.walkingText{
+    align-items: center;
+    flex-direction: column;
+}
+
+.walkingText span {
+    display: block;
+    margin: 10px 0;
+}
+.colored{
+    color: green;
+}
+.colored2 {
+    color: darkblue;
+}
+.colored3 {
+    color: #635dff;
+}
