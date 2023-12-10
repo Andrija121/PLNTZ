@@ -48,6 +48,7 @@ namespace UserService.Controllers
 
             existingUser.FirstName = editedUser.FirstName;
             existingUser.LastName = editedUser.LastName;
+            existingUser.Password = editedUser.Password;
             existingUser.Birthday = editedUser.Birthday;
             existingUser.Last_seen = editedUser.Last_seen;
             existingUser.IsActive = editedUser.IsActive;

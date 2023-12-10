@@ -3,7 +3,7 @@
     //User Web API
     {
       "UpstreamPathTemplate": "/api/v1/User",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
         "AuthenticationProviderKey": "ProviderKey"
@@ -20,7 +20,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/v1/User/{userId}",
-      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
         "AuthenticationProviderKey": "ProviderKey"

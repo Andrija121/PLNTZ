@@ -44,7 +44,7 @@ export const getProtectedResource = async (accessToken) => {
 
 export const getAdminResource = async (accessToken) => {
   const config = {
-    url: `${apiServerUrl}/api/messages/admin`,
+    url: `${apiServerUrl}/api/v1/User/1`,
     method: "GET",
     headers: {
       "content-type": "application/json",

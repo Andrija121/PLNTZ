@@ -9,7 +9,7 @@ import { AuthenticationGuard } from "./components/authentication-guard";
 import { HomePage } from "./pages/home-page";
 import { AdminPage } from "./pages/admin-page";
 import { ProtectedPage } from "./pages/protected-page";
-import { PublicPage } from "./pages/public-page";
+import { UserServicePage } from "./pages/user-service.page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -25,8 +25,8 @@ export const App = () => {
     <Routes>
       <Route path="/" element={<HomePage />}></Route>
       <Route
-        path="/public"
-        element={<AuthenticationGuard component={PublicPage} />}
+        path="/users"
+        element={<AuthenticationGuard component={UserServicePage} />}
       ></Route>
       <Route
         path="/profile"
