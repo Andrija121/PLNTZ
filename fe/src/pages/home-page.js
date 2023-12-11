@@ -1,5 +1,4 @@
 import React from "react";
-import { HeroBanner } from "../components/hero-banner";
 import { PageLayout } from "../components/page-layout";
 import Typed from "typed.js";
 

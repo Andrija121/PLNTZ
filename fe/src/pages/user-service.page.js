@@ -11,7 +11,6 @@ import { PageLayout } from "../components/page-layout";
 
 export const UserServicePage = () => {
   const [users, setUsers] = useState([]);
-  const [fetchedUserId, setFetchedUserId] = useState("");
   const [fetchedUser, setFetchedUser] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
   const [newUser, setNewUser] = useState({
@@ -86,9 +85,6 @@ export const UserServicePage = () => {
     try {
       const accessToken = await getAccessTokenSilently();
       const currentUser = users.find((user) => user.id === id);
-      const headers = {
-        "Content-Type": "application/json", // Set the content type to JSON
-      };
       const updatedUserData = {
         firstName: newUser.firstName || currentUser.firstName,
         lastName: newUser.lastName || currentUser.lastName,
