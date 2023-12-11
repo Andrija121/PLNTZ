@@ -4,7 +4,7 @@ services:
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: db_user
+    container_name: user_db
     environment:
       SA_PASSWORD: "test@123"
       ACCEPT_EULA: Y
@@ -30,7 +30,7 @@ services:
       - DbUser=sa
       - Password=test@123
       - DbName=user_service
-    container_name: userservice
+    container_name: user_service
     ports:
       - "8080:80"
     networks:

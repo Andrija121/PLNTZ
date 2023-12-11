@@ -1,6 +1,7 @@
-version: '3.4'
+version: '3.8'
 
 services:
+
   db:
     container_name: user_db
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -9,22 +10,22 @@ services:
       ACCEPT_EULA: Y
     ports:
       - "1401:1433"
-    # volumes:
-    #   - ./data:/var/opt/mssql/data
-    #   - ./log:/var/mssql/log
-    #   - ./secrets:/var/opt/mssql/secrets
+    volumes:
+      - ./Microservices/UserService/data:/var/opt/mssql/data
+      - ./Microservices/UserService/log:/var/mssql/log
+      - ./Microservices/UserService/secrets:/var/opt/mssql/secrets
     networks:
       - backend
 
 
-  userservice:
+  user-service:
     container_name: user_service
     image: ${DOCKER_REGISTRY-}userservice
     build:
-      context: ../MicroServices/UserService/
+      context: ./Microservices/UserService
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - "8080:80"
     depends_on:
       - db
     environment:
@@ -33,6 +34,17 @@ services:
       - DbUser=sa
       - Password=test@123
       - DbName=user_service
+    networks:
+      - backend
+
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: ./APIGateway/
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8080"
     networks:
       - backend
 
