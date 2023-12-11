@@ -24,7 +24,7 @@ jobs:
     - name: Show Directory Contents
       run: ls -R
     - name: Restore dependencies
-      run: dotnet restore PLNTZ.sln
+      run: dotnet restore .
     - name: Build
       run: dotnet build --no-restore
     - name: Test
