@@ -1,4 +1,4 @@
-name: Tests for front-app
+name: React CI Frontend
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: 'fe/package-lock.json'
+        
+    - run: ls -R ./fe
+    - run: cat ./fe/package-lock.json
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
