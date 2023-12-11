@@ -71,6 +71,7 @@ public class Program
         {
             webBuilder.UseStartup<Startup>();
         });
+
     private static void WaitForDb(IServiceProvider services)
     {
         var retryCount = 0;

@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: user_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "test@123"
+      ACCEPT_EULA: Y
+    ports:
+      - "1401:1433"
+    # volumes:
+    #   - ./data:/var/opt/mssql/data
+    #   - ./log:/var/mssql/log
+    #   - ./secrets:/var/opt/mssql/secrets
+    networks:
+      - backend
+
+
+  userservice:
+    container_name: user_service
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: ../MicroServices/UserService/
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DbServer=db
+      - DbPort=1401
+      - DbUser=sa
+      - Password=test@123
+      - DbName=user_service
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
