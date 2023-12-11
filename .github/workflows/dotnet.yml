@@ -5,9 +5,16 @@ name: .NET Build
 
 on:
   push:
+    paths:
+      - '**/*'
+      - '!/.github/workflows/**'    
     branches: [ "development" ]
+    
   pull_request:
-    branches: [ "master" ]
+      paths:
+        - '**/*'
+        - '!/.github/workflows/**'
+      branches: [ "master" ]  
 
 jobs:
   build:
