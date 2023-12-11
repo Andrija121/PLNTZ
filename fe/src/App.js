@@ -43,12 +43,5 @@ export const App = () => {
         element={<AuthenticationGuard component={AdminPage} />}
       />
     </Routes>
-    //class name could be removed
-    // <div className="App">
-    //   <header></header>
-    //   <LoginButton />
-    //   <LogoutButton />
-    //   <Profile />
-    // </div>
   );
 };
