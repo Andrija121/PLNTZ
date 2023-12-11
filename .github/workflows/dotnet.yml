@@ -24,8 +24,13 @@ jobs:
     - name: Show Directory Contents
       run: ls -R
     - name: Restore dependencies
-      run: dotnet restore PLNTZ.sln
+      run: |
+        cd Microservices
+        dotnet restore ../PLNTZ.sln
+
     - name: Build
-      run: dotnet build --no-restore
+      run: |
+        cd Microservices
+        dotnet build ../PLNTZ.sln --no-restore
     - name: Test
       run: dotnet test PLNTZ.sln --no-build --verbosity normal
