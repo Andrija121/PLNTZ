@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: .NET Build
 
 on:
   push:
@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -23,6 +24,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore PLNTZ.sln
     - name: Build
-      run: dotnet build PLNTZ.sln --no-restore
+      run: dotnet build --no-restore
     - name: Test
       run: dotnet test PLNTZ.sln --no-build --verbosity normal
