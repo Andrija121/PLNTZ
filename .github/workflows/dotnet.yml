@@ -26,7 +26,7 @@ jobs:
 
     - name: Restore dependencies
       working-directory: ./Microservices
-      run: dotnet restore
+      run: dotnet restore ../PLNTZ.sln
 
     - name: Build
       working-directory: ./Microservices
