@@ -28,6 +28,7 @@ jobs:
         cache-dependency-path: 'fe/package-lock.json'
         
     - run: ls -R 
+    - run: node --version
     - run: cat package-lock.json
     - run: npm --version
     - run: npm cache clean --force
