@@ -23,14 +23,15 @@ jobs:
         dotnet-version: 8.0.x
     - name: Show Directory Contents
       run: ls -R
+
     - name: Restore dependencies
-      run: |
-        cd Microservices
-        dotnet restore ../PLNTZ.sln
+      working-directory: ./Microservices
+      run: dotnet restore
 
     - name: Build
-      run: |
-        cd Microservices
-        dotnet build ../PLNTZ.sln --no-restore
+      working-directory: ./Microservices
+      run: dotnet build ../PLNTZ.sln --no-restore
+
     - name: Test
-      run: dotnet test PLNTZ.sln --no-build --verbosity normal
+      working-directory: ./Microservices
+      run: dotnet test ../PLNTZ.sln --no-build --verbosity normal
