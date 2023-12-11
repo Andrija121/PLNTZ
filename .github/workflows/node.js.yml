@@ -29,6 +29,7 @@ jobs:
         
     - run: ls -R 
     - run: npm config list
+    - run: npm install --package-lock-only
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
