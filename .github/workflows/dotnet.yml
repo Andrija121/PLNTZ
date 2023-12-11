@@ -8,7 +8,7 @@ on:
     paths:
       - '**/*'
       - '!/.github/workflows/**'    
-    branches: [ "development" ]
+    branches: [ "master" ]
     
   pull_request:
       paths:
