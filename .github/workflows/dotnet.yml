@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+    - name: Show Directory Contents
+      run: ls -R
     - name: Restore dependencies
       run: dotnet restore PLNTZ.sln
     - name: Build
