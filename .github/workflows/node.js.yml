@@ -24,6 +24,9 @@ jobs:
         with:
           ref: master
           path: ./fe
+          
+      - name: Change to the ./fe directory
+        run: cd ./fe
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
