@@ -25,13 +25,10 @@ jobs:
       run: ls -R
 
     - name: Restore dependencies
-      working-directory: ./Microservices/AuthService
-      run: dotnet restore
+      run: dotnet restore ./PLNTZ.sln
 
     - name: Build
-      working-directory: ./Microservices/AuthService
-      run: dotnet build --no-restore
+      run: dotnet build ./PLNTZ.sln --no-restore
 
     - name: Test
-      working-directory: ./Microservices/AuthService
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./PLNTZ.sln --no-build --verbosity normal
