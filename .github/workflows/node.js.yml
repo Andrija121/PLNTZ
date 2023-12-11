@@ -7,10 +7,10 @@ on:
     branches: [ "master", "development" ]
 defaults:
   run:
-    working-directory: ./fe/
+    working-directory: ./fe
 
 jobs:
-  test-front-app:
+  fronted-app:
 
     runs-on: ubuntu-latest
 
