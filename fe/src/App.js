@@ -1,4 +1,3 @@
-//import "./styles/App.css";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -10,6 +9,7 @@ import { HomePage } from "./pages/home-page";
 import { AdminPage } from "./pages/admin-page";
 import { ProtectedPage } from "./pages/protected-page";
 import { UserServicePage } from "./pages/user-service.page";
+import { NotFoundPage } from "./pages/not-found-page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -37,7 +37,7 @@ export const App = () => {
         element={<AuthenticationGuard component={Profile} requiredRoles={[]} />}
       />
       <Route path="/callback" element={<CallbackPage />} />
-      {/* <Route path="*" element={<NotFoundPage />} /> */}
+      <Route path="*" element={<NotFoundPage />} />
       <Route
         path="/protected"
         element={
