@@ -21,26 +21,41 @@ export const App = () => {
       </div>
     );
   }
+  const adminRequiredRoles = ["admin"];
+  //const protectedRequiredRoles = ["admin", "client"];
   return (
     <Routes>
       <Route path="/" element={<HomePage />}></Route>
       <Route
         path="/users"
-        element={<AuthenticationGuard component={UserServicePage} />}
+        element={
+          <AuthenticationGuard component={UserServicePage} requiredRoles={[]} />
+        }
       ></Route>
       <Route
         path="/profile"
-        element={<AuthenticationGuard component={Profile} />}
+        element={<AuthenticationGuard component={Profile} requiredRoles={[]} />}
       />
       <Route path="/callback" element={<CallbackPage />} />
       {/* <Route path="*" element={<NotFoundPage />} /> */}
       <Route
         path="/protected"
-        element={<AuthenticationGuard component={ProtectedPage} />}
+        element={
+          <AuthenticationGuard
+            component={ProtectedPage}
+            requiredRoles={adminRequiredRoles}
+          />
+        }
       />
+
       <Route
         path="/admin"
-        element={<AuthenticationGuard component={AdminPage} />}
+        element={
+          <AuthenticationGuard
+            component={AdminPage}
+            requiredRoles={adminRequiredRoles}
+          />
+        }
       />
     </Routes>
   );
