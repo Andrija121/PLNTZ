@@ -2,7 +2,7 @@
   "Routes": [
     //User Web API
     {
-      "UpstreamPathTemplate": "/api/v1/User",
+      "UpstreamPathTemplate": "/api/User",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
@@ -16,10 +16,10 @@
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/api/v1/User"
+      "DownstreamPathTemplate": "/api/User"
     },
     {
-      "UpstreamPathTemplate": "/api/v1/User/{userId}",
+      "UpstreamPathTemplate": "/api/User/{userId}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
@@ -33,7 +33,7 @@
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/api/v1/User/{userId}"
+      "DownstreamPathTemplate": "/api/User/{userId}"
     }
   ],
 

@@ -9,6 +9,7 @@ namespace UserService.Repository
         void CreateUser(User user);
         void DeleteUser(int user_id);
         void UpdateUser(User user);
+        User GetUserByAuth0Id(string authzId);
 
         void Save();
     }

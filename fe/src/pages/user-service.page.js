@@ -14,14 +14,13 @@ export const UserServicePage = () => {
   const [fetchedUser, setFetchedUser] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
   const [newUser, setNewUser] = useState({
+    authzId: "",
+    email: "",
     firstName: "",
     lastName: "",
-    password: "",
     birthday: "",
     lastSeen: "",
     isActive: false,
-    roleId: 0,
-    addressId: 0,
   });
 
   useEffect(() => {
@@ -53,26 +52,24 @@ export const UserServicePage = () => {
         ...newUser,
         lastSeen: formattedDate,
         isActive: true,
-        roleId: 1,
-        addressId: 1,
       };
 
       const { data, error } = await createUser(accessToken, createdUserData);
       if (error) {
         console.error("Error creating user:", error);
+        alert(`Error creating user: ${error}`);
       } else {
         // Update the users state with the new user
         setUsers((prevUsers) => [...prevUsers, data]);
 
         setNewUser({
+          authzId: "",
+          email: "",
           firstName: "",
           lastName: "",
-          password: "",
           birthday: "",
           lastSeen: "",
           isActive: false,
-          roleId: 0,
-          addressId: 0,
         });
       }
     } catch (error) {
@@ -88,7 +85,6 @@ export const UserServicePage = () => {
       const updatedUserData = {
         firstName: newUser.firstName || currentUser.firstName,
         lastName: newUser.lastName || currentUser.lastName,
-        password: newUser.password || currentUser.password,
         birthday: newUser.birthday || currentUser.birthday,
         // Add other fields as needed
       };
@@ -150,9 +146,6 @@ export const UserServicePage = () => {
       console.error("Error fetching user:", error);
     }
   };
-  function maskPassword(password) {
-    return "*".repeat(password.length);
-  }
 
   return (
     <PageLayout>
@@ -167,7 +160,6 @@ export const UserServicePage = () => {
               {users.map((user) => (
                 <li key={user.id}>
                   {user.firstName} - {user.lastName} - {user.birthday} -{" "}
-                  {maskPassword(user.password)}
                   {/* Add other fields as needed */}
                   <button
                     style={{ backgroundColor: "blue", margin: "10px" }}
@@ -234,7 +226,7 @@ export const UserServicePage = () => {
                     fontSize: "20px",
                   }}
                 >
-                  Password: {maskPassword(fetchedUser.password)};
+                  Authz ID: {fetchedUser.authzId};
                 </p>
                 {/* Add other fields as needed */}
               </div>
@@ -281,12 +273,22 @@ export const UserServicePage = () => {
                 />
               </label>
               <label style={{ marginInline: "5px" }}>
-                Password:
+                Auth0Id:
                 <input
-                  type="password"
-                  value={newUser.password}
+                  type="text"
+                  value={newUser.authzId}
                   onChange={(e) =>
-                    setNewUser({ ...newUser, password: e.target.value })
+                    setNewUser({ ...newUser, authzId: e.target.value })
+                  }
+                />
+              </label>
+              <label style={{ marginInline: "5px" }}>
+                Email:
+                <input
+                  type="email"
+                  value={newUser.email}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, email: e.target.value })
                   }
                 />
               </label>
@@ -300,7 +302,6 @@ export const UserServicePage = () => {
                   }
                 />
               </label>
-              {/* Add other fields as needed */}
               <button
                 style={{ margin: "10px", width: "110px" }}
                 className="button__login"

@@ -12,8 +12,8 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20231125173750_newDcompose")]
-    partial class newDcompose
+    [Migration("20231214145217_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,51 +25,6 @@ namespace UserService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("UserService.Identity.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AddressNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("UserService.Identity.Role", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("UserService.Identity.User", b =>
                 {
                     b.Property<int>("Id")
@@ -78,11 +33,16 @@ namespace UserService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    b.Property<string>("AuthzId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -98,13 +58,6 @@ namespace UserService.Migrations
                     b.Property<DateTime>("Last_seen")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -113,14 +66,13 @@ namespace UserService.Migrations
                         new
                         {
                             Id = 1,
-                            AddressId = 1,
+                            AuthzId = "6567896db88a4affe7295ec2",
                             Birthday = new DateOnly(2001, 1, 26),
+                            Email = "a.hanga@student.fontys.nl",
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 11, 25, 17, 37, 49, 723, DateTimeKind.Utc).AddTicks(1529),
-                            Password = "andrija123",
-                            RoleId = 1
+                            Last_seen = new DateTime(2023, 12, 14, 14, 52, 17, 107, DateTimeKind.Utc).AddTicks(2345)
                         });
                 });
 #pragma warning restore 612, 618

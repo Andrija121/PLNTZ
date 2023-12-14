@@ -11,5 +11,6 @@ namespace UserService.Services
         Task<User> GetUserByIdAsync(int userId);
         Task<User> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int userId);
+        Task<User> GetUserByAuth0Id(string authzId);
     }
 }

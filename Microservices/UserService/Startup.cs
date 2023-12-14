@@ -21,12 +21,7 @@ namespace UserService
             options.UseSqlServer(Configuration.GetConnectionString("UserDB"),sqlServerOption => sqlServerOption.EnableRetryOnFailure()));
 
             services.AddTransient<IUserRepository,UserRepository>();
-            services.AddMvc();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Api ", Version = "v1" });
-            });
+            //services.AddMvc();
 
             services.AddScoped<IUserService, Services.UserService>();
             services.AddControllers();
@@ -45,18 +40,10 @@ namespace UserService
                 app.UseHsts();
             }
 
-            app.UseSwagger();
-
             app.UseRouting();
 
             app.UseAuthorization();
 
-
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
             app.UseEndpoints(endpoints => 
             {
                 endpoints.MapSwagger();

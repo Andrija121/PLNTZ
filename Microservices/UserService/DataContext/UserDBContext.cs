@@ -8,8 +8,6 @@ namespace UserService.Data
     public class UserDBContext(DbContextOptions<UserDBContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
@@ -17,14 +15,13 @@ namespace UserService.Data
                 new User
                 {
                     Id = 1,
+                    AuthzId= "6567896db88a4affe7295ec2",
+                    Email = "a.hanga@student.fontys.nl",
                     FirstName = "Andrija",
                     LastName = "Hanga",
-                    AddressId = 1,
                     Birthday = new DateOnly(2001, 01, 26),
-                    IsActive = true,
                     Last_seen = DateTime.UtcNow,
-                    Password = "andrija123",
-                    RoleId = 1,
+                    IsActive = true
                 }
                 );
         }

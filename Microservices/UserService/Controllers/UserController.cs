@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UserService.Data;
 using UserService.Identity;
@@ -9,7 +10,7 @@ using UserService.Services;
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class UserController(IUserService userService) : ControllerBase()
     {
         private readonly IUserService _userService = userService;
@@ -34,8 +35,15 @@ namespace UserService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            var createdUser = await _userService.CreateUserAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { userId = createdUser.Id }, createdUser);
+            try
+            {
+                var createdUser = await _userService.CreateUserAsync(user);
+                return Ok(createdUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{userId}")]
@@ -48,12 +56,10 @@ namespace UserService.Controllers
 
             existingUser.FirstName = editedUser.FirstName;
             existingUser.LastName = editedUser.LastName;
-            existingUser.Password = editedUser.Password;
+            existingUser.Email = editedUser.Email;
             existingUser.Birthday = editedUser.Birthday;
             existingUser.Last_seen = editedUser.Last_seen;
             existingUser.IsActive = editedUser.IsActive;
-            existingUser.RoleId = editedUser.RoleId;
-            existingUser.AddressId = editedUser.AddressId;
 
             await _userService.UpdateUserAsync(existingUser);
 

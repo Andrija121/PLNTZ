@@ -23,6 +23,11 @@ namespace UserService.Repository
             Save();
         }
 
+        public User GetUserByAuth0Id(string authzId)
+        {
+            User? user = _dbContext.Users.FirstOrDefault(u => u.AuthzId == authzId);
+            return user;
+        }
 
         public User GetUserById(int user_id) => _dbContext.Users.Find(user_id);
 

@@ -14,8 +14,16 @@ namespace UserService.Services
 
         public async Task<User> CreateUserAsync(User user)
         {
+            var users = await GetAllUsersAsync();
+
+            if (users.Any(u => u.Email == user.Email))
+            {
+                throw new Exception($"User with EMAIL {user.Email} already exists");
+            }
+
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
+
             return user;
         }
 
@@ -45,8 +53,8 @@ namespace UserService.Services
             existingUser.Birthday = user.Birthday;
             existingUser.Last_seen = user.Last_seen;
             existingUser.IsActive = user.IsActive;
-            existingUser.RoleId = user.RoleId;
-            existingUser.AddressId = user.AddressId;
+            existingUser.AuthzId = user.AuthzId;
+            existingUser.Email = user.Email;
 
             await _dbContext.SaveChangesAsync();
 
@@ -62,5 +70,11 @@ namespace UserService.Services
             return true;
         }
 
+        public async Task<User> GetUserByAuth0Id(string authzId)
+        {
+            User? user = _dbContext.Users.FirstOrDefault(u => u.AuthzId == authzId);
+            return user
+                   ?? throw new Exception($"User with {authzId} was not found");
+        }
     }
 }

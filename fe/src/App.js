@@ -47,7 +47,6 @@ export const App = () => {
           />
         }
       />
-
       <Route
         path="/admin"
         element={
