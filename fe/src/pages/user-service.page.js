@@ -160,6 +160,7 @@ export const UserServicePage = () => {
               {users.map((user) => (
                 <li key={user.id}>
                   {user.firstName} - {user.lastName} - {user.birthday} -{" "}
+                  {user.authzId}
                   {/* Add other fields as needed */}
                   <button
                     style={{ backgroundColor: "blue", margin: "10px" }}
@@ -236,7 +237,6 @@ export const UserServicePage = () => {
             <div
               style={{
                 width: "200px",
-                display: "flex",
                 margin: "30px  ",
                 alignItems: "center",
                 alignContent: "center",
