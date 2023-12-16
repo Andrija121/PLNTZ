@@ -1,7 +1,10 @@
-﻿using System;
+﻿using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace RabbitMQ
@@ -11,17 +14,35 @@ namespace RabbitMQ
         private readonly RabbitMQConfiguration _configuration;
         private readonly RabbitMQProducer _producer;
         private readonly RabbitMQConsumer _consumer;
+        private IConnection _connection;
+        private IModel _channel;
 
         public RabbitMQSerivce(RabbitMQConfiguration configuration, RabbitMQProducer producer, RabbitMQConsumer consumer)        {
             _configuration = configuration;
             _producer = producer;
             _consumer = consumer;
 
+
             InitializeConnection();
         }
         private void InitializeConnection()
         {
-            // Implementation for initializing RabbitMQ connection
+            var factory = new ConnectionFactory
+            {
+                HostName = _configuration.Hostname,
+                UserName = _configuration.UserName,
+                Password = _configuration.Password,
+                Port = 5672,
+                VirtualHost = "/",
+                Ssl = { ServerName = "your-rabbitmq-server" },
+                RequestedConnectionTimeout = TimeSpan.FromSeconds(10),
+                AutomaticRecoveryEnabled = true,
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
+                RequestedHeartbeat = TimeSpan.FromSeconds(30),
+            };
+
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
         }
 
         public void Send(string queueName, string message)
@@ -35,7 +56,8 @@ namespace RabbitMQ
 
         public void CloseConnection()
         {
-            // Implementation for closing the connection
+            _channel.Close();
+            _connection.Close();
         }
 
     }

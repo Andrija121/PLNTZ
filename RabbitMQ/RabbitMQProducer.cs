@@ -18,7 +18,15 @@ namespace RabbitMQ
 
         public void Send(string queueName, string message)
         {
-            
+            _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            // Convert the message to bytes
+            var body = Encoding.UTF8.GetBytes(message);
+
+            // Publish the message to the queue
+            _channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+
+            Console.WriteLine($" [x] Sent '{message}' to '{queueName}'");
         }
     }
 }

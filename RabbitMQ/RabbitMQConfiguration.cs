@@ -8,8 +8,8 @@ namespace RabbitMQ
 {
     internal class RabbitMQConfiguration
     {
-        public string Hostname { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public string Hostname { get; set; } = "localhost";
+        public string UserName { get; set; } = "guest";
+        public string Password { get; set; } = "guest";
     }
 }
