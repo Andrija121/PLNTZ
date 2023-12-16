@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMQ
 {
-    internal class RabbitMQSender
+    internal class RabbitMQProducer
     {
     }
 }
