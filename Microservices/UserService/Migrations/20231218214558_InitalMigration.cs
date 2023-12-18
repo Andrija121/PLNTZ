@@ -31,7 +31,7 @@ namespace UserService.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "AuthzId", "Birthday", "Email", "FirstName", "IsActive", "LastName", "Last_seen" },
-                values: new object[] { "6567896db88a4affe7295ec2", new DateOnly(2001, 1, 26), "a.hanga@student.fontys.nl", "Andrija", true, "Hanga", new DateTime(2023, 12, 18, 20, 55, 29, 292, DateTimeKind.Utc).AddTicks(258) });
+                values: new object[] { "6567896db88a4affe7295ec2", new DateOnly(2001, 1, 26), "a.hanga@student.fontys.nl", "Andrija", true, "Hanga", new DateTime(2023, 12, 18, 21, 45, 58, 476, DateTimeKind.Utc).AddTicks(6148) });
         }
 
         /// <inheritdoc />

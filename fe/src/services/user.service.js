@@ -20,9 +20,9 @@ export const getAllUsers = async (accessToken) => {
   };
 };
 
-export const getUserWithId = async (accessToken, id) => {
+export const getUserWithId = async (accessToken, authzId) => {
   const config = {
-    url: `${apiServerUrl}/api/User/${id}`,
+    url: `${apiServerUrl}/api/User/${authzId}`,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -76,9 +76,9 @@ export const createUser = async (accessToken, userData) => {
   }
 };
 
-export const updateUser = async (accessToken, id, updatedUserData) => {
+export const updateUser = async (accessToken, authzId, updatedUserData) => {
   const config = {
-    url: `${apiServerUrl}/api/User/${id}`,
+    url: `${apiServerUrl}/api/User/${authzId}`,
     method: "PUT",
     headers: {
       "content-type": "application/json",
@@ -95,9 +95,9 @@ export const updateUser = async (accessToken, id, updatedUserData) => {
   };
 };
 
-export const deleteUser = async (accessToken, id) => {
+export const deleteUser = async (accessToken, authzId) => {
   const config = {
-    url: `${apiServerUrl}/api/User/${id}`,
+    url: `${apiServerUrl}/api/User/${authzId}`,
     method: "DELETE",
     headers: {
       "content-type": "application/json",

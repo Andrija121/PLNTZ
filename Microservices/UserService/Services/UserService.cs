@@ -16,9 +16,13 @@ namespace UserService.Services
         {
             var users = await GetAllUsersAsync();
 
-            if (users.Any(u => u.Email == user.Email || u.AuthzId == user.AuthzId))
+            if (users.Any(u => u.Email == user.Email))
             {
-                throw new Exception($"User with EMAIL {user.Email}, or {user.AuthzId} already exists");
+                throw new Exception($"User with EMAIL {user.Email}");
+            }
+            if (users.Any(u => u.AuthzId == user.AuthzId))
+            {
+                throw new Exception($"User with EMAIL {user.Email}");
             }
 
             _dbContext.Users.Add(user);

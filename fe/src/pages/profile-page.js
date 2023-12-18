@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect } from "react";
 import { CodeSnippet } from "../components/code-snippet";
 import { PageLayout } from "../components/page-layout";
+import { createUser } from "../services/user.service";
 
 export const Profile = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -10,16 +11,28 @@ export const Profile = () => {
     const getUserMetadata = async () => {
       try {
         const accessToken = await getAccessTokenSilently();
-
         console.log(accessToken);
+
+        // Create user on the backend
+        if (accessToken) {
+          let newUser = {
+            authzId: user.sub.replace(/^auth0\|/, ""), // Assuming user.sub is the Auth0 subject (sub) claim
+            email: user.email,
+            lastName: user.nickname,
+            firstName: user.name,
+            last_seen: user.updated_at,
+          };
+
+          // Call the createUser function from your service
+          await createUser(accessToken, newUser);
+        }
       } catch (e) {
-        console.log(e.message);
+        console.error(e.message);
       }
     };
 
     getUserMetadata();
   }, [getAccessTokenSilently, user?.sub]);
-
   if (!user) {
     return null;
   }

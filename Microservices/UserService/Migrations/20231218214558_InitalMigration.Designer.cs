@@ -12,7 +12,7 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20231218205529_InitalMigration")]
+    [Migration("20231218214558_InitalMigration")]
     partial class InitalMigration
     {
         /// <inheritdoc />
@@ -64,7 +64,7 @@ namespace UserService.Migrations
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 12, 18, 20, 55, 29, 292, DateTimeKind.Utc).AddTicks(258)
+                            Last_seen = new DateTime(2023, 12, 18, 21, 45, 58, 476, DateTimeKind.Utc).AddTicks(6148)
                         });
                 });
 #pragma warning restore 612, 618
