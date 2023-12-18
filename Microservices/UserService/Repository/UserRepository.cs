@@ -13,14 +13,24 @@ namespace UserService.Repository
 
         public void CreateUser(User user)
         {
+            var users = GetUsers();
+            if (users.Any(u => u.Email == user.Email || u.AuthzId == user.AuthzId))
+            {
+                throw new Exception($"User with EMAIL {user.Email}, or {user.AuthzId} already exists");
+            }
             _dbContext.Users.Add(user);
         }
 
-        public void DeleteUser(int user_id)
+        //public void DeleteUser(int user_id)
+        //{
+        //    var user = _dbContext.Users.Find(user_id);
+        //    _dbContext.Users.Remove(user);
+        //    Save();
+        //}
+        public void DeleteUserByAuth0Id(string auth0Id)
         {
-            var user = _dbContext.Users.Find(user_id);
-            _dbContext.Users.Remove(user);
-            Save();
+            var user = _dbContext.Users.Find(auth0Id);
+            _dbContext.Users.Remove(user); Save();
         }
 
         public User GetUserByAuth0Id(string authzId)
@@ -29,7 +39,7 @@ namespace UserService.Repository
             return user;
         }
 
-        public User GetUserById(int user_id) => _dbContext.Users.Find(user_id);
+        //public User GetUserById(int user_id) => _dbContext.Users.Find(user_id);
 
         public IEnumerable<User> GetUsers()
         {

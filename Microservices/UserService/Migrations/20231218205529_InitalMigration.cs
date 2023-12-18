@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UserService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitalMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,9 +15,7 @@ namespace UserService.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AuthzId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthzId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -27,13 +25,13 @@ namespace UserService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.AuthzId);
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AuthzId", "Birthday", "Email", "FirstName", "IsActive", "LastName", "Last_seen" },
-                values: new object[] { 1, "6567896db88a4affe7295ec2", new DateOnly(2001, 1, 26), "a.hanga@student.fontys.nl", "Andrija", true, "Hanga", new DateTime(2023, 12, 14, 14, 52, 17, 107, DateTimeKind.Utc).AddTicks(2345) });
+                columns: new[] { "AuthzId", "Birthday", "Email", "FirstName", "IsActive", "LastName", "Last_seen" },
+                values: new object[] { "6567896db88a4affe7295ec2", new DateOnly(2001, 1, 26), "a.hanga@student.fontys.nl", "Andrija", true, "Hanga", new DateTime(2023, 12, 18, 20, 55, 29, 292, DateTimeKind.Utc).AddTicks(258) });
         }
 
         /// <inheritdoc />

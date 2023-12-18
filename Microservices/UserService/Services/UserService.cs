@@ -16,9 +16,9 @@ namespace UserService.Services
         {
             var users = await GetAllUsersAsync();
 
-            if (users.Any(u => u.Email == user.Email))
+            if (users.Any(u => u.Email == user.Email || u.AuthzId == user.AuthzId))
             {
-                throw new Exception($"User with EMAIL {user.Email} already exists");
+                throw new Exception($"User with EMAIL {user.Email}, or {user.AuthzId} already exists");
             }
 
             _dbContext.Users.Add(user);
@@ -32,20 +32,20 @@ namespace UserService.Services
             return await _dbContext.Users.ToListAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int userId)
-        {
-            var user = await _dbContext.Users.FindAsync(userId);
+        //public async Task<User> GetUserByIdAsync(int userId)
+        //{
+        //    var user = await _dbContext.Users.FindAsync(userId);
 
-            return user ?? throw new Exception($"User with {userId} was not found");
-        }
+        //    return user ?? throw new Exception($"User with {userId} was not found");
+        //}
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            var existingUser = await _dbContext.Users.FindAsync(user.Id);
+            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.AuthzId == user.AuthzId);
 
             if (existingUser == null)
             {
-                throw new Exception($"User with ID {user.Id} not found");
+                throw new Exception($"User with AuthZId {user.AuthzId} not found");
             }
 
             existingUser.FirstName = user.FirstName;
@@ -61,18 +61,27 @@ namespace UserService.Services
             return existingUser;
         }
 
-        public async Task<bool> DeleteUserAsync(int userId)
+        //public async Task<bool> DeleteUserAsync(int userId)
+        //{
+        //    var user = await _dbContext.Users.FindAsync(userId) ?? throw new Exception($"User with ID {userId} not found");
+        //    _dbContext.Users.Remove(user);
+        //    await _dbContext.SaveChangesAsync();
+
+        //    return true;
+        //}
+
+        public async Task<bool> DeleteUserAsyncWithAuthzId(string authzId)
         {
-            var user = await _dbContext.Users.FindAsync(userId) ?? throw new Exception($"User with ID {userId} not found");
+            var user = await _dbContext.Users.FindAsync(authzId) ?? throw new Exception($"User With AuthZID {authzId} not found");
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<User> GetUserByAuth0Id(string authzId)
+        public async Task<User> GetUserByAuth0IdAsync(string authzId)
         {
-            User? user = _dbContext.Users.FirstOrDefault(u => u.AuthzId == authzId);
+            User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.AuthzId == authzId) ?? throw new Exception($"User With AuthZID {authzId} not found");
             return user
                    ?? throw new Exception($"User with {authzId} was not found");
         }

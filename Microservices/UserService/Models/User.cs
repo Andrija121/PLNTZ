@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Identity
 {
     public class User
     {
-        public int Id { get; set; }
+        [Key]
         public string AuthzId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }

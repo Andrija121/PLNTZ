@@ -15,13 +15,20 @@ namespace UserService.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        [HttpGet("{userId}", Name ="Get")]
-        public async Task<IActionResult> GetUserById(int userId)
-        {
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
-                return NotFound();
+        //[HttpGet("{userId}", Name ="Get")]
+        //public async Task<IActionResult> GetUserById(int userId)
+        //{
+        //    var user = await _userService.GetUserByIdAsync(userId);
+        //    if (user == null)
+        //        return NotFound();
 
+        //    return Ok(user);
+        //}
+        [HttpGet("{authzId}")]
+        public async Task<IActionResult> GetUserByAuthZId(string authzId)
+        {
+            var user = await _userService.GetUserByAuth0IdAsync(authzId);
+            if (user == null) return NotFound();
             return Ok(user);
         }
 
@@ -46,10 +53,10 @@ namespace UserService.Controllers
             }
         }
 
-        [HttpPut("{userId}")]
-        public async Task<IActionResult> EditUser(int userId, [FromBody] User editedUser)
+        [HttpPut("{authzId}")]
+        public async Task<IActionResult> EditUser(string authzId, [FromBody] User editedUser)
         {
-            var existingUser = await _userService.GetUserByIdAsync(userId);
+            var existingUser = await _userService.GetUserByAuth0IdAsync(authzId);
 
             if (existingUser == null)
                 return NotFound();
@@ -66,10 +73,22 @@ namespace UserService.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        //[HttpDelete("{userId}")]
+        //public async Task<IActionResult> DeleteUser(int userId)
+        //{
+        //    var success = await _userService.DeleteUserAsync(userId);
+
+        //    if (success)
+        //        return NoContent();
+
+        //    return NotFound();
+        //}
+
+
+        [HttpDelete("{authzId}")]
+        public async Task<IActionResult> DeleteUser(string authzId)
         {
-            var success = await _userService.DeleteUserAsync(userId);
+            var success = await _userService.DeleteUserAsyncWithAuthzId(authzId);
 
             if (success)
                 return NoContent();

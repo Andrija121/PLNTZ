@@ -24,15 +24,8 @@ namespace UserService.Migrations
 
             modelBuilder.Entity("UserService.Identity.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("AuthzId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
@@ -55,21 +48,20 @@ namespace UserService.Migrations
                     b.Property<DateTime>("Last_seen")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("AuthzId");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
                             AuthzId = "6567896db88a4affe7295ec2",
                             Birthday = new DateOnly(2001, 1, 26),
                             Email = "a.hanga@student.fontys.nl",
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 12, 14, 14, 52, 17, 107, DateTimeKind.Utc).AddTicks(2345)
+                            Last_seen = new DateTime(2023, 12, 18, 20, 55, 29, 292, DateTimeKind.Utc).AddTicks(258)
                         });
                 });
 #pragma warning restore 612, 618

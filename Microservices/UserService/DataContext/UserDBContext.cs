@@ -14,7 +14,6 @@ namespace UserService.Data
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = 1,
                     AuthzId= "6567896db88a4affe7295ec2",
                     Email = "a.hanga@student.fontys.nl",
                     FirstName = "Andrija",
