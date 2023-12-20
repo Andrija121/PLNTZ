@@ -20,7 +20,7 @@ export const getAllUsers = async (accessToken) => {
   };
 };
 
-export const getUserWithId = async (accessToken, authzId) => {
+export const getUserWithAuthZId = async (accessToken, authzId) => {
   const config = {
     url: `${apiServerUrl}/api/User/${authzId}`,
     method: "GET",

@@ -29,7 +29,10 @@ export const App = () => {
       <Route
         path="/users"
         element={
-          <AuthenticationGuard component={UserServicePage} requiredRoles={[]} />
+          <AuthenticationGuard
+            component={UserServicePage}
+            requiredRoles={adminRequiredRoles}
+          />
         }
       ></Route>
       <Route
