@@ -47,6 +47,7 @@ services:
       - "8001:8080"
     networks:
       - backend
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
