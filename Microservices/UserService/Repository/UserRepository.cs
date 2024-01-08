@@ -21,16 +21,22 @@ namespace UserService.Repository
             _dbContext.Users.Add(user);
         }
 
-        //public void DeleteUser(int user_id)
-        //{
-        //    var user = _dbContext.Users.Find(user_id);
-        //    _dbContext.Users.Remove(user);
-        //    Save();
-        //}
         public void DeleteUserByAuth0Id(string auth0Id)
         {
             var user = _dbContext.Users.Find(auth0Id);
             _dbContext.Users.Remove(user); Save();
+        }
+
+        public IEnumerable<User> GetAllUsersForCity(string city)
+        {
+            List<User> users = _dbContext.Users.ToList().FindAll(u => u.City == city);
+            return users;
+        }
+
+        public IEnumerable<User> GetAllUsersForCountry(string country)
+        {
+            List<User> users = _dbContext.Users.ToList().FindAll(u => u.Country == country);
+            return users;
         }
 
         public User GetUserByAuth0Id(string authzId)
@@ -39,7 +45,17 @@ namespace UserService.Repository
             return user;
         }
 
-        //public User GetUserById(int user_id) => _dbContext.Users.Find(user_id);
+        public User GetUserByCity(string city)
+        {
+            User user = _dbContext.Users.FirstOrDefault(u =>u.City == city);
+            return user;
+        }
+
+        public User GetUserByCountry(string country)
+        {
+            User user = _dbContext.Users.FirstOrDefault(u => u.Country== country);
+            return user;
+        }
 
         public IEnumerable<User> GetUsers()
         {

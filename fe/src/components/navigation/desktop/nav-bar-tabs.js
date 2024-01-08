@@ -12,10 +12,10 @@ export const NavBarTabs = () => {
     //Tbd
     <div className="nav-bar__tabs">
       <NavBarTab path="/profile" label="Profile" />
+      {isAuthenticated && <NavBarTab path="/location" label="Location" />}
       {isAuthenticated && isAdmin && (
         <>
           <NavBarTab path="/users" label="Users" />
-          <NavBarTab path="/protected" label="Protected" />
           <NavBarTab path="/admin" label="Admin" />
         </>
       )}

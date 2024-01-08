@@ -8,10 +8,12 @@ namespace UserService.Services
     {
         Task<User> CreateUserAsync(User user);
         Task<List<User>> GetAllUsersAsync();
-        //Task<User> GetUserByIdAsync(int userId);
         Task<User> UpdateUserAsync(User user);
-        //Task<bool> DeleteUserAsync(int userId);
         Task<bool> DeleteUserAsyncWithAuthzId(string authzId);
         Task<User> GetUserByAuth0IdAsync(string authzId);
+        Task<List<User>> GetAllUsersForCountryAsync(string country);
+        Task<List<User>> GetAllUsersForCityAsync(string city);
+        Task<User> GetUserByCountry(string country);
+        Task<User> GetUserByCity(string city);
     }
 }

@@ -19,6 +19,40 @@
       "DownstreamPathTemplate": "/api/User"
     },
     {
+      "UpstreamPathTemplate": "/api/User/country/{country}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/country/{country}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/city/{city}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/city/{city}"
+    },
+    {
       "UpstreamPathTemplate": "/api/User/{authzId}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
       "AuthenticationOptions": {
@@ -35,23 +69,6 @@
       ],
       "DownstreamPathTemplate": "/api/User/{authzId}"
     }
-    //{
-    //  "UpstreamPathTemplate": "/api/User/{userId}",
-    //  "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
-    //  "AuthenticationOptions": {
-    //    "AllowedScopes": [],
-    //    "AuthenticationProviderKey": "ProviderKey"
-    //  },
-
-    //  "DownstreamScheme": "http",
-    //  "DownstreamHostAndPorts": [
-    //    {
-    //      "Host": "user-service", //user-service
-    //      "Port": 8080
-    //    }
-    //  ],
-    //  "DownstreamPathTemplate": "/api/User/{userId}"
-    //}
   ],
 
   "GlobalConfiguration": {

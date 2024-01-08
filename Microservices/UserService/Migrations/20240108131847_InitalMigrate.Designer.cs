@@ -12,8 +12,8 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20231218214558_InitalMigration")]
-    partial class InitalMigration
+    [Migration("20240108131847_InitalMigrate")]
+    partial class InitalMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,22 +30,26 @@ namespace UserService.Migrations
                     b.Property<string>("AuthzId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateOnly>("Birthday")
+                    b.Property<DateOnly?>("Birthday")
                         .HasColumnType("date");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Last_seen")
@@ -60,11 +64,25 @@ namespace UserService.Migrations
                         {
                             AuthzId = "6567896db88a4affe7295ec2",
                             Birthday = new DateOnly(2001, 1, 26),
+                            City = "Eindhoven",
+                            Country = "Netherlands",
                             Email = "a.hanga@student.fontys.nl",
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 12, 18, 21, 45, 58, 476, DateTimeKind.Utc).AddTicks(6148)
+                            Last_seen = new DateTime(2024, 1, 8, 13, 18, 46, 567, DateTimeKind.Utc).AddTicks(5872)
+                        },
+                        new
+                        {
+                            AuthzId = "6567896db88a4affe7295ec2123",
+                            Birthday = new DateOnly(2001, 1, 26),
+                            City = "New York",
+                            Country = "The Netherlands",
+                            Email = "a.hanga123@student.fontys.nl",
+                            FirstName = "Andrija123",
+                            IsActive = true,
+                            LastName = "Hanga123",
+                            Last_seen = new DateTime(2024, 1, 8, 13, 18, 46, 567, DateTimeKind.Utc).AddTicks(5876)
                         });
                 });
 #pragma warning restore 612, 618

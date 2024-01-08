@@ -4,7 +4,7 @@ import { CodeSnippet } from "../components/code-snippet";
 import { PageLayout } from "../components/page-layout";
 import { getProtectedResource } from "../services/message.service";
 
-export const ProtectedPage = () => {
+export const LocationPage = () => {
   const [message, setMessage] = useState("");
 
   const { getAccessTokenSilently } = useAuth0();
@@ -40,14 +40,10 @@ export const ProtectedPage = () => {
     <PageLayout>
       <div className="content-layout">
         <h1 id="page-title" className="content__title">
-          Protected Page (*Will become messaging page)
+          Location page
         </h1>
         <div className="content__body">
           <p id="page-description">
-            <span>
-              This page retrieves a <strong>protected message</strong> from an
-              external API.
-            </span>
             <span>
               <strong>Only authenticated users can access this page.</strong>
             </span>

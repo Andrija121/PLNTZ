@@ -11,6 +11,10 @@ namespace UserService.Repository
         //void DeleteUser(int user_id);
         void DeleteUserByAuth0Id(string authzId);
         void UpdateUser(User user);
+        IEnumerable<User> GetAllUsersForCountry(string country);
+        IEnumerable<User> GetAllUsersForCity(string city);
+        User GetUserByCountry(string country);
+        User GetUserByCity(string city);
 
         void Save();
     }

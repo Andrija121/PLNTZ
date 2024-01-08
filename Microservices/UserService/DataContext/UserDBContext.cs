@@ -19,6 +19,20 @@ namespace UserService.Data
                     FirstName = "Andrija",
                     LastName = "Hanga",
                     Birthday = new DateOnly(2001, 01, 26),
+                    Country="Netherlands",
+                    City="Eindhoven",
+                    Last_seen = DateTime.UtcNow,
+                    IsActive = true
+                },
+                new User
+                {
+                    AuthzId = "6567896db88a4affe7295ec2123",
+                    Email = "a.hanga123@student.fontys.nl",
+                    FirstName = "Andrija123",
+                    LastName = "Hanga123",
+                    Birthday = new DateOnly(2001, 01, 26),
+                    Country = "The Netherlands",
+                    City = "New York",
                     Last_seen = DateTime.UtcNow,
                     IsActive = true
                 }

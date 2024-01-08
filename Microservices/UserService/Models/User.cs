@@ -8,10 +8,12 @@ namespace UserService.Identity
         [Key]
         public string AuthzId { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; } 
-        public DateOnly Birthday { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; } 
+        public DateOnly? Birthday { get; set; }
         public DateTime Last_seen { get; set; }
+        public string? Country { get; set; }
+        public string? City { get; set; }
         public bool IsActive { get; set; } 
 
         public User()

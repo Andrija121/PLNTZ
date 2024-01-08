@@ -15,15 +15,6 @@ namespace UserService.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        //[HttpGet("{userId}", Name ="Get")]
-        //public async Task<IActionResult> GetUserById(int userId)
-        //{
-        //    var user = await _userService.GetUserByIdAsync(userId);
-        //    if (user == null)
-        //        return NotFound();
-
-        //    return Ok(user);
-        //}
         [HttpGet("{authzId}")]
         public async Task<IActionResult> GetUserByAuthZId(string authzId)
         {
@@ -36,6 +27,18 @@ namespace UserService.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+        [HttpGet("country/{country}")]
+        public async Task<IActionResult> GetAllUsersForCountry(string country)
+        {
+            var users = await _userService.GetAllUsersForCountryAsync(country);
+            return Ok(users);
+        }
+        [HttpGet("city/{city}")]
+        public async Task<IActionResult> GetAllUsersForCity(string city)
+        {
+            var users = await _userService.GetAllUsersForCityAsync(city);
             return Ok(users);
         }
 
@@ -66,23 +69,14 @@ namespace UserService.Controllers
             existingUser.Email = editedUser.Email;
             existingUser.Birthday = editedUser.Birthday;
             existingUser.Last_seen = editedUser.Last_seen;
+            existingUser.Country = editedUser.Country;
+            existingUser.City = editedUser.City;
             existingUser.IsActive = editedUser.IsActive;
 
             await _userService.UpdateUserAsync(existingUser);
 
             return NoContent();
         }
-
-        //[HttpDelete("{userId}")]
-        //public async Task<IActionResult> DeleteUser(int userId)
-        //{
-        //    var success = await _userService.DeleteUserAsync(userId);
-
-        //    if (success)
-        //        return NoContent();
-
-        //    return NotFound();
-        //}
 
 
         [HttpDelete("{authzId}")]

@@ -7,7 +7,7 @@ import { CallbackPage } from "./pages/callback-page";
 import { AuthenticationGuard } from "./components/authentication-guard";
 import { HomePage } from "./pages/home-page";
 import { AdminPage } from "./pages/admin-page";
-import { ProtectedPage } from "./pages/protected-page";
+import { LocationPage } from "./pages/location-page";
 import { UserServicePage } from "./pages/user-service.page";
 import { NotFoundPage } from "./pages/not-found-page";
 
@@ -42,12 +42,9 @@ export const App = () => {
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route
-        path="/protected"
+        path="/location"
         element={
-          <AuthenticationGuard
-            component={ProtectedPage}
-            requiredRoles={adminRequiredRoles}
-          />
+          <AuthenticationGuard component={LocationPage} requiredRoles={[]} />
         }
       />
       <Route
