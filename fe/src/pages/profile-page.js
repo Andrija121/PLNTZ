@@ -5,13 +5,16 @@ import {
   createUser,
   getUserWithAuthZId,
   updateUser,
+  deleteUser,
 } from "../services/user.service";
 
 // TO BE FIXED HOW STATES CHANGE WHEN TOGGLING BETWEEN SAVED CHANGES AND EDIT USER button
 
 export const Profile = () => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { user, getAccessTokenSilently, logout } = useAuth0();
   const [changeSaved, setChangeSaved] = useState(false);
+  const currentDate = new Date();
+  const isoDateString = currentDate.toISOString();
   const [userData, setUserData] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editUserData, setEditUserData] = useState({
@@ -34,6 +37,40 @@ export const Profile = () => {
       ...editUserData,
       [name]: value,
     });
+  };
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+  const handleDeleteUser = async () => {
+    try {
+      // Ask for confirmation before proceeding with deletion
+      const confirmed = window.confirm(
+        "Are you sure you want to delete your account?"
+      );
+
+      if (!confirmed) {
+        return; // Do nothing if the user cancels the confirmation
+      }
+
+      const accessToken = await getAccessTokenSilently();
+      const { error } = await deleteUser(
+        accessToken,
+        user.sub.replace(/^auth0\|/, "")
+      );
+
+      if (error) {
+        console.error("Error deleting user:", error);
+      } else {
+        // Update the users state by removing the deleted user
+        handleLogout();
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   // Define the list of countries and cities
@@ -78,6 +115,7 @@ export const Profile = () => {
               ...prevEditUserData,
               authzId: data.authzId || user.sub.replace(/^auth0\|/, ""),
               email: data.email || user.email,
+              lastSeen: new Date().toISOString(),
               firstName: data.firstName || "",
               lastName: data.lastName || "",
               birthday: data.birthday || "",
@@ -180,94 +218,123 @@ export const Profile = () => {
             {/* Display user information */}
             {userData && (
               <div>
-                <h3>User Information</h3>
+                <h3 style={{ color: "white" }}>User Information</h3>
                 {!changeSaved && editMode ? (
                   // Display editable form in edit mode
                   <form onSubmit={handleFormSubmit}>
-                    <label>
-                      First Name:
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={editUserData.firstName}
-                        onChange={handleInputChange}
-                      />
-                    </label>
-                    <label>
-                      Last Name:
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={editUserData.lastName}
-                        onChange={handleInputChange}
-                      />
-                    </label>
-                    <label>
-                      Birthday:
-                      <input
-                        type="date"
-                        name="birthday"
-                        value={editUserData.birthday}
-                        onChange={handleInputChange}
-                      />
-                    </label>
-                    <label>
-                      Email:
-                      <input
-                        readOnly={true}
-                        type="email"
-                        name="email"
-                        value={userData.email}
-                        onChange={handleInputChange}
-                      ></input>
-                    </label>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        First Name:
+                        <input
+                          style={{ marginLeft: "10px" }}
+                          type="text"
+                          name="firstName"
+                          value={editUserData.firstName}
+                          onChange={handleInputChange}
+                        />
+                      </label>
+                    </p>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        Last Name:
+                        <input
+                          style={{ marginLeft: "10px" }}
+                          type="text"
+                          name="lastName"
+                          value={editUserData.lastName}
+                          onChange={handleInputChange}
+                        />
+                      </label>
+                    </p>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        Birthday:
+                        <input
+                          style={{ marginLeft: "10px" }}
+                          type="date"
+                          name="birthday"
+                          value={editUserData.birthday}
+                          onChange={handleInputChange}
+                        />
+                      </label>
+                    </p>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        Email:
+                        <input
+                          style={{ marginLeft: "10px" }}
+                          readOnly={true}
+                          type="email"
+                          name="email"
+                          value={userData.email}
+                          onChange={handleInputChange}
+                        ></input>
+                      </label>
+                    </p>
                     <label
+                      style={{ display: "flex" }}
                       hidden={true}
                       value={userData.authzId}
                       onChange={handleInputChange}
                     ></label>
-                    <label>
-                      Country:
-                      <select
-                        value={editUserData.country}
-                        name="country"
-                        onChange={handleInputChange}
-                      >
-                        <option value="">Select</option>
-                        {countries.map((country) => (
-                          <option key={country} value={country}>
-                            {country}
-                          </option>
-                        ))}
-                        <option value="Other">Other</option>
-                      </select>
-                    </label>
-                    <label>
-                      City:
-                      <select
-                        value={editUserData.city}
-                        name="city"
-                        onChange={handleInputChange}
-                      >
-                        <option value="">Select</option>
-                        {editUserData.country &&
-                          citiesByCountry[editUserData.country]?.map((city) => (
-                            <option key={city} value={city}>
-                              {city}
+                    <label
+                      style={{ display: "flex" }}
+                      hidden={true}
+                      value={isoDateString}
+                      onChange={handleInputChange}
+                    ></label>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        Country:
+                        <select
+                          style={{ marginLeft: "10px" }}
+                          value={editUserData.country}
+                          name="country"
+                          onChange={handleInputChange}
+                        >
+                          <option value="">Select</option>
+                          {countries.map((country) => (
+                            <option key={country} value={country}>
+                              {country}
                             </option>
                           ))}
-                        <option value="Other">Other</option>
-                      </select>
-                      {editUserData.city === "Other" && (
-                        <input
-                          type="text"
-                          name="city"
+                          <option value="Other">Other</option>
+                        </select>
+                      </label>
+                    </p>
+                    <p>
+                      <label style={{ display: "flex" }}>
+                        City:
+                        <select
+                          style={{ marginLeft: "10px" }}
                           value={editUserData.city}
+                          name="city"
                           onChange={handleInputChange}
-                        />
-                      )}
-                    </label>
-                    <button type="submit">Save Changes</button>
+                        >
+                          <option value="">Select</option>
+                          {editUserData.country &&
+                            citiesByCountry[editUserData.country]?.map(
+                              (city) => (
+                                <option key={city} value={city}>
+                                  {city}
+                                </option>
+                              )
+                            )}
+                          <option value="Other">Other</option>
+                        </select>
+                        {editUserData.city === "Other" && (
+                          <input
+                            type="text"
+                            name="city"
+                            value={editUserData.city}
+                            onChange={handleInputChange}
+                          />
+                        )}
+                      </label>
+                    </p>
+                    <button type="submit" className="button__sign-up">
+                      Save Changes
+                    </button>
                   </form>
                 ) : (
                   // Display non-editable user information
@@ -279,11 +346,23 @@ export const Profile = () => {
                     <p>City: {userData.city}</p>
                     {/* Add other user properties as needed */}
                     {userData.birthday && <p>Birthday: {userData.birthday}</p>}
-                    <button onClick={handleEditToggle}>Edit</button>
+                    <button
+                      className="button__sign-up"
+                      onClick={handleEditToggle}
+                    >
+                      Edit Information
+                    </button>
                   </>
                 )}
               </div>
             )}
+            <button
+              className="button__logout"
+              style={{ marginTop: "10px" }}
+              onClick={handleDeleteUser}
+            >
+              Delete My Account
+            </button>
           </div>
         </div>
       </div>

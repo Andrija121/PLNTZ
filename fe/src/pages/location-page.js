@@ -1,40 +1,64 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
-import { CodeSnippet } from "../components/code-snippet";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../components/page-layout";
 import { getProtectedResource } from "../services/message.service";
+import { getUserWithAuthZId } from "../services/user.service";
 
 export const LocationPage = () => {
-  const [message, setMessage] = useState("");
-
-  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(true);
+  const { user, getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
 
-    const getMessage = async () => {
-      const accessToken = await getAccessTokenSilently();
-      const { data, error } = await getProtectedResource(accessToken);
+    const getLocationAndMessage = async () => {
+      try {
+        setLoading(true);
 
-      if (!isMounted) {
-        return;
-      }
+        const accessToken = await getAccessTokenSilently();
 
-      if (data) {
-        setMessage(JSON.stringify(data, null, 2));
-      }
+        // Fetch user data
+        const { data: userData, error: userError } = await getUserWithAuthZId(
+          accessToken,
+          user.sub.replace(/^auth0\|/, "")
+        );
 
-      if (error) {
-        setMessage(JSON.stringify(error, null, 2));
+        console.log("userData:", userData);
+        console.log("userError:", userError);
+
+        // Check if location is not set, redirect to profile page
+        if (userData.city == null || userData.country == null) {
+          console.error("Error fetching user data:", userError);
+          setTimeout(() => {
+            navigate("/profile"); // Redirect after a short delay
+          }, 3500); // Adjust the delay as needed
+          return;
+        }
+
+        // Fetch protected resource (message)
+        const { error } = await getProtectedResource(accessToken);
+
+        if (!isMounted) {
+          return;
+        }
+
+        if (error) {
+          // Display a message to set the location on the profile page
+          setLoading(false);
+        }
+      } catch {
+        console.log("error");
       }
     };
 
-    getMessage();
+    getLocationAndMessage();
 
     return () => {
       isMounted = false;
     };
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, navigate, user.sub]);
 
   return (
     <PageLayout>
@@ -44,11 +68,10 @@ export const LocationPage = () => {
         </h1>
         <div className="content__body">
           <p id="page-description">
-            <span>
-              <strong>Only authenticated users can access this page.</strong>
-            </span>
+            {loading
+              ? "Loading..."
+              : "You have set your location successfully ."}
           </p>
-          <CodeSnippet title="Protected Message" code={message} />
         </div>
       </div>
     </PageLayout>
