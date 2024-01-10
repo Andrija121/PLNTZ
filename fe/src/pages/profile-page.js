@@ -12,7 +12,6 @@ import {
 
 export const Profile = () => {
   const { user, getAccessTokenSilently, logout } = useAuth0();
-  const [changeSaved, setChangeSaved] = useState(false);
   const currentDate = new Date();
   const isoDateString = currentDate.toISOString();
   const [userData, setUserData] = useState(null);
@@ -180,11 +179,14 @@ export const Profile = () => {
         );
         const { data, error } = result;
         console.log(data);
-        setChangeSaved(true);
+        setEditMode(true);
         if (data) {
           setUserData(data);
+          setEditMode(false);
         } else {
           console.error("Error updating user data:", error);
+          setEditMode(false);
+          window.location.reload();
         }
       }
     } catch (error) {
@@ -219,7 +221,7 @@ export const Profile = () => {
             {userData && (
               <div>
                 <h3 style={{ color: "white" }}>User Information</h3>
-                {!changeSaved && editMode ? (
+                {editMode ? (
                   // Display editable form in edit mode
                   <form onSubmit={handleFormSubmit}>
                     <p>
