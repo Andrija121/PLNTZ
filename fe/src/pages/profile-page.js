@@ -122,17 +122,17 @@ export const Profile = () => {
               city: data.city || "",
             }));
           } else {
-            console.error("Error fetching user data:", error);
+            console.error("Error fetching user data1:", error);
           }
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user data2:", error);
       }
     };
 
     // Call the fetchUserData function
     fetchUserData();
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, user.sub, user.email]);
 
   useEffect(() => {
     const getUserMetadata = async () => {

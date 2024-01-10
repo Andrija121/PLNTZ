@@ -90,6 +90,7 @@ export const LocationPage = () => {
         // Check if location is not set, redirect to profile page
         if (userData.city == null || userData.country == null) {
           console.error("Error fetching user data:", userError);
+          alert("Please add your location");
           setTimeout(() => {
             navigate("/profile"); // Redirect after a short delay
           }, 3500); // Adjust the delay as needed
@@ -164,37 +165,43 @@ export const LocationPage = () => {
                   <h3 style={{ color: "white" }}>Available People</h3>
                 </div>
                 <div style={{ alignContent: "center" }}>
-                  {users.map((user) => (
-                    <div
-                      key={user.authzId}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <p style={{ marginRight: "10px", marginBottom: "0" }}>
-                        <b>Name:</b> {user.firstName}, {user.lastName},
-                        <br />
-                        <b>Email:</b> {user.email},<br /> <b>Place:</b>{" "}
-                        {user.city}
-                      </p>
-
-                      <button
+                  {users
+                    .filter(
+                      (u) => u.authzId !== user.sub.replace(/^auth0\|/, "")
+                    )
+                    .map((user) => (
+                      <div
+                        key={user.authzId}
                         style={{
-                          padding: "4px 8px",
-                          fontSize: "1.5rem",
-                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "8px",
                         }}
-                        onClick={() => alert("handleAddFriend(user.authzId)")}
                       >
-                        Add Friend +
-                      </button>
-                    </div>
-                  ))}
+                        <p style={{ marginRight: "10px", marginBottom: "0" }}>
+                          <b>Name:</b> {user.firstName}, {user.lastName},
+                          <br />
+                          <b>Email:</b> {user.email},<br /> <b>Place:</b>{" "}
+                          {user.city}, {user.country}
+                        </p>
+
+                        <button
+                          style={{
+                            padding: "4px 8px",
+                            fontSize: "1.5rem",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => alert("handleAddFriend(user.authzId)")}
+                        >
+                          Add Friend +
+                        </button>
+                      </div>
+                    ))}
                 </div>
-                {error && (() => alert("Please select a location"))}
+                {error &&
+                  selectedLocation &&
+                  (() => alert("Please select a location"))}
               </div>
             )}
           </p>
