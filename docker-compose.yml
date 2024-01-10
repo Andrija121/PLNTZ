@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  db:
+  user_db:
     container_name: user_db
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -17,6 +17,40 @@ services:
     networks:
       - backend
 
+  friendship_db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: friendship_db
+    environment:
+      SA_PASSWORD: "test@123"
+      ACCEPT_EULA: Y
+    ports:
+      - "1402:1433"
+    # volumes:
+    #   - ./data:/var/opt/mssql/data
+    #   - ./log:/var/mssql/log
+    #   - ./secrets:/var/opt/mssql/secrets 
+    networks:
+      - backend
+  
+  friendship-service:
+    image: ${DOCKER_REGISTRY-}friendshipservice
+    depends_on:
+      - friendship_db
+    build:
+      context: ./Microservices/FriendshipService
+      dockerfile: Dockerfile
+    environment:
+      - DbServer=db
+      - DbPort=1402
+      - DbUser=sa
+      - Password=test@123
+      - DbName=friendship_service
+    container_name: friendship_service
+    ports:
+      - "8081:80"
+    networks:
+      - backend
+
 
   user-service:
     container_name: user_service
@@ -27,7 +61,7 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - db
+      - user_db
     environment:
       - DbServer=db
       - DbPort=1401

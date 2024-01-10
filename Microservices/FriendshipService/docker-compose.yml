@@ -30,7 +30,7 @@
       - DbName=friendship_service
     container_name: friendship_service
     ports:
-      - "8080:81"
+      - "8080:80"
     networks:
       - backend
 networks:

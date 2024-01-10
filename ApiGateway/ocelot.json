@@ -68,6 +68,57 @@
         }
       ],
       "DownstreamPathTemplate": "/api/User/{authzId}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/{userId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/{userId}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/send-request",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/send-request"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/respond-request/{friendshipId}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/respond-request/{friendshipId}"
     }
   ],
 
