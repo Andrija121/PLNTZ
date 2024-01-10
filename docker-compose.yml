@@ -47,7 +47,7 @@ services:
       - DbName=friendship_service
     container_name: friendship_service
     ports:
-      - "8081:80"
+      - "8082:8080"
     networks:
       - backend
 
@@ -59,7 +59,7 @@ services:
       context: ./Microservices/UserService
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8081:8080"
     depends_on:
       - user_db
     environment:

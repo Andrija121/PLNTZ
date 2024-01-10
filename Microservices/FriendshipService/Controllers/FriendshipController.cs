@@ -11,7 +11,7 @@ namespace FriendshipService.Controllers
     {
         private readonly IFriendshipService _friendshipService = friendshipService;
 
-        [HttpGet]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetFriendshipsForUser(string userId)
         {
             List<Friendship> friendships = await _friendshipService.GetFriends(userId);

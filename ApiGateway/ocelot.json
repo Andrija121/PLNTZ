@@ -80,7 +80,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service
+          "Host": "friendship-service", //friendship-service (Get Friends)
           "Port": 8080
         }
       ],
@@ -97,7 +97,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service
+          "Host": "friendship-service", //friendship-service (send request)
           "Port": 8080
         }
       ],
@@ -114,7 +114,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service
+          "Host": "friendship-service", //friendship-service (respond-request)
           "Port": 8080
         }
       ],
