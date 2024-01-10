@@ -15,7 +15,7 @@
     networks:
       - backend
   
-  user-service:
+  friendship-service:
     depends_on:
       - db
     image: friendship-image:tag
