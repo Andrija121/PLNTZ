@@ -39,7 +39,8 @@ namespace UserService.Services
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.AuthzId == user.AuthzId);
+            //double check _dbContext and dbContext
+            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.AuthzId == user.AuthzId);
 
             if (existingUser == null)
             {

@@ -3,17 +3,16 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 81
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Microservices/FriendshipService/FriendshipService.csproj", "Microservices/FriendshipService/"]
-RUN dotnet restore "./Microservices/FriendshipService/./FriendshipService.csproj"
+COPY ["FriendshipService.csproj", "."]
+RUN dotnet restore "FriendshipService.csproj"
 COPY . .
-WORKDIR "/src/Microservices/FriendshipService"
-RUN dotnet build "./FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src"
+RUN dotnet build "FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
