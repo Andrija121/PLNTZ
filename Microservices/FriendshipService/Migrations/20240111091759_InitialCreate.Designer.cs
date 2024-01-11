@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FriendshipService.Migrations
 {
     [DbContext(typeof(FriendshipDBContext))]
-    [Migration("20240110155338_InitialCreate")]
+    [Migration("20240111091759_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

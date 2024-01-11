@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMQ
 {
-    internal class RabbitMQSerivce
+    public class RabbitMQSerivce
     {
         private readonly RabbitMQConfiguration _configuration;
         private readonly RabbitMQProducer _producer;
@@ -32,9 +32,9 @@ namespace RabbitMQ
                 HostName = _configuration.Hostname,
                 UserName = _configuration.UserName,
                 Password = _configuration.Password,
-                Port = 5672,
+                Port = _configuration.Port,
                 VirtualHost = "/",
-                Ssl = { ServerName = "your-rabbitmq-server" },
+                Ssl = { ServerName = "rabbitmq-server" },
                 RequestedConnectionTimeout = TimeSpan.FromSeconds(10),
                 AutomaticRecoveryEnabled = true,
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
@@ -56,8 +56,8 @@ namespace RabbitMQ
 
         public void CloseConnection()
         {
-            _channel.Close();
-            _connection.Close();
+            _channel?.Close();
+            _connection?.Close();
         }
 
     }

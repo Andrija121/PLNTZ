@@ -18,6 +18,13 @@ namespace FriendshipService.Controllers
             if(friendships ==null) { return NotFound(); }
             return Ok(friendships) ;
         }
+        [HttpGet("pending/{userId}")]
+        public async Task<IActionResult> GetPendingFriendshipsForUser(string userId)
+        {
+            List<Friendship> friendships = await _friendshipService.GetPendingFriends(userId);
+            if (friendships == null) { return NotFound(); }
+            return Ok(friendships);
+        }
         [HttpPost("send-request")]
         public async Task<IActionResult> SendFriendshipRequest([FromBody] FriendshipRequestDto friendshipRequest)
         {

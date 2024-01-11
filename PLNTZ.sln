@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{BF00C3CA-9AB1-4DB2-9FAE-805D0EC746C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{549A5405-FCFE-4708-955E-D2E19A77D446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rabbit", "RabbitMQ\Rabbit.csproj", "{549A5405-FCFE-4708-955E-D2E19A77D446}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "Microservices\UserService\UserService.csproj", "{669A9DDA-6FD5-4382-AB9C-FD9548F8CEDC}"
 EndProject

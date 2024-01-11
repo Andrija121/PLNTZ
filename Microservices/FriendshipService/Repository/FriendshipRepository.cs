@@ -8,7 +8,7 @@ namespace FriendshipService.Repository
         private readonly FriendshipDBContext _dbContext = friendshipDBContext ?? throw new ArgumentNullException(nameof(friendshipDBContext));
         public IEnumerable<Friendship> GetFriends(string userId)
         {
-            return _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId==userId)).ToList();
+            return _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId==userId) && f.Status == FriendshipStatus.Accepted).ToList();
         }
 
         public void RespondToFriendshipRequest(int friendshipId, bool accept)
@@ -61,6 +61,11 @@ namespace FriendshipService.Repository
             {
                 throw;
             }
+        }
+
+        public IEnumerable<Friendship> GetPendingFriends(string userId)
+        {
+            return _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId == userId) && f.Status == FriendshipStatus.Pending).ToList();
         }
         public void Save()
         {

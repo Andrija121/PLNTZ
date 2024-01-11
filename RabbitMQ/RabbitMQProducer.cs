@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace RabbitMQ
 {
-    internal class RabbitMQProducer
+    public class RabbitMQProducer(IModel channel)
     {
-        private readonly IModel _channel;
+        private readonly IModel _channel = channel;
 
-        public RabbitMQProducer(IModel channel)
-        {
-            _channel = channel;
-        }
 
         public void Send(string queueName, string message)
         {

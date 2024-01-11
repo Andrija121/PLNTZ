@@ -87,6 +87,23 @@
       "DownstreamPathTemplate": "/api/Friendship/{userId}"
     },
     {
+      "UpstreamPathTemplate": "/api/Friendship/pending/{userId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service (Get Pending Friends)
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/pending/{userId}"
+    },
+    {
       "UpstreamPathTemplate": "/api/Friendship/send-request",
       "UpstreamHttpMethod": [ "Post" ],
       "AuthenticationOptions": {

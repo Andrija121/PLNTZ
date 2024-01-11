@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace RabbitMQ
 {
-    internal class RabbitMQConsumer
+    public class RabbitMQConsumer(IModel channel)
     {
-        private readonly IModel _channel;
-
-        public RabbitMQConsumer(IModel channel)
-        {
-            _channel = channel;
-        }
+        private readonly IModel _channel = channel;
 
         public void Receive(string queueName, Action<string> messageHandler)
         {

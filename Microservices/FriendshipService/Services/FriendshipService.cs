@@ -13,6 +13,12 @@ namespace FriendshipService.Services
             return friends;
         }
 
+        public async Task<List<Friendship>> GetPendingFriends(string userId)
+        {
+            var friends = await _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId == userId) && f.Status == FriendshipStatus.Pending).ToListAsync();
+            return friends;
+        }
+
         public async Task RespondToFriendshipRequest(int friendShipId,bool accept)
         {
             try
