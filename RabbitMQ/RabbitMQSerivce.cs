@@ -17,7 +17,8 @@ namespace RabbitMQ
         private IConnection _connection;
         private IModel _channel;
 
-        public RabbitMQSerivce(RabbitMQConfiguration configuration, RabbitMQProducer producer, RabbitMQConsumer consumer)        {
+        public RabbitMQSerivce(RabbitMQConfiguration configuration, RabbitMQProducer producer, RabbitMQConsumer consumer)
+        {
             _configuration = configuration;
             _producer = producer;
             _consumer = consumer;
@@ -30,15 +31,6 @@ namespace RabbitMQ
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.Hostname,
-                UserName = _configuration.UserName,
-                Password = _configuration.Password,
-                Port = _configuration.Port,
-                VirtualHost = "/",
-                Ssl = { ServerName = "rabbitmq-server" },
-                RequestedConnectionTimeout = TimeSpan.FromSeconds(10),
-                AutomaticRecoveryEnabled = true,
-                NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
-                RequestedHeartbeat = TimeSpan.FromSeconds(30),
             };
 
             _connection = factory.CreateConnection();

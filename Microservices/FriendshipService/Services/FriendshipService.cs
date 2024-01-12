@@ -1,12 +1,27 @@
 ﻿using FriendshipService.DataContext;
 using FriendshipService.Models;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ;
 
 namespace FriendshipService.Services
 {
-    public class FriendshipService(FriendshipDBContext friendshipDBContext) : IFriendshipService
+    public class FriendshipService(FriendshipDBContext friendshipDBContext, RabbitMQConsumer rabbitMQConsumer) : IFriendshipService
     {
         private readonly FriendshipDBContext _dbContext = friendshipDBContext ??throw new ArgumentNullException(nameof(friendshipDBContext));
+        private readonly RabbitMQConsumer _rabbitMQConsumer = rabbitMQConsumer ?? throw new ArgumentNullException(nameof(friendshipDBContext));
+
+        public void StartConsuming(string queueName)
+        {
+            queueName = "plntzq";
+            // Subscribe to the specified queue
+            _rabbitMQConsumer.Receive(queueName, HandleReceivedMessage);
+        }
+        private void HandleReceivedMessage(string message)
+        {
+            // Handle the received message here
+            Console.WriteLine($"Received message: {message}");
+            // Add your business logic here...
+        }
         public async Task<List<Friendship>> GetFriends(string userId)
         {
             var friends = await _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId == userId)&& f.Status == FriendshipStatus.Accepted).ToListAsync();
@@ -57,6 +72,7 @@ namespace FriendshipService.Services
         {
             try
             {
+                StartConsuming("plntz");
                 var exisitingFriendship = await _dbContext.Friendships.FirstOrDefaultAsync(f=>(f.User_1_AuthzId == senderId && f.User_2_AuthzId==recipientId)||
                 (f.User_1_AuthzId==recipientId && f.User_2_AuthzId== senderId));
 

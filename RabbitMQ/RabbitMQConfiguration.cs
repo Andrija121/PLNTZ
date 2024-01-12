@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,10 @@ namespace RabbitMQ
         public string Hostname { get; set; } = "localhost";
         public string UserName { get; set; } = "guest";
         public string Password { get; set; } = "guest";
-        public int Port { get; set; } = 5672;
+        public int Port { get; set; } = 15672;
+
+        public string ConnectionString => $"amqp://{UserName}:{Password}@{Hostname}:{Port}";
+        }
 
     }
-}
+

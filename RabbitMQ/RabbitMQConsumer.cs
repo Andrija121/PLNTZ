@@ -14,7 +14,7 @@ namespace RabbitMQ
 
         public void Receive(string queueName, Action<string> messageHandler)
         {
-            _channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
             // Set up a consumer to handle incoming messages
             var consumer = new EventingBasicConsumer(_channel);

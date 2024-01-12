@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RabbitMQ;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Metrics;
@@ -9,9 +10,15 @@ using UserService.Identity;
 
 namespace UserService.Services
 {
-    public class UserService(UserDBContext dbContext) : IUserService
+    public class UserService(UserDBContext dbContext,RabbitMQSerivce rabbitMQSerivce) : IUserService
     {
         private readonly UserDBContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        private readonly RabbitMQSerivce _rabbitMQSerivce = rabbitMQSerivce ?? throw new ArgumentNullException(nameof(rabbitMQSerivce));
+
+        public void SendMessage(string message)
+        {
+            _rabbitMQSerivce.Send("plntzq", message);
+        }
 
         public async Task<User> CreateUserAsync(User user)
         {
@@ -26,6 +33,7 @@ namespace UserService.Services
                 throw new Exception($"User with EMAIL {user.Email}");
             }
 
+            SendMessage($"User with {user.AuthzId} created");
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
 
