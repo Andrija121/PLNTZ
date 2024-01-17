@@ -51,6 +51,17 @@ namespace FriendshipService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message}");
             }
         }
+
+        [HttpDelete("{authzId}")]
+        public async Task<IActionResult> DeleteFriendshipsForUser(string authzId)
+        {
+            var success = await _friendshipService.DeleteFriendshipsForUser(authzId);
+
+            if (success)
+                return NoContent();
+
+            return NotFound();
+        }
     }
 
     public class FriendshipRequestDto

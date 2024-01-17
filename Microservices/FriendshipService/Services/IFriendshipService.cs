@@ -9,5 +9,6 @@ namespace FriendshipService.Services
         Task RespondToFriendshipRequest(int friendShipId, bool accept);
         Task<List<Friendship>> GetFriends(string userId);
         Task<List<Friendship>>GetPendingFriends(string userId);
+        Task<bool> DeleteFriendshipsForUser(string authzId);
     }
 }

@@ -96,6 +96,21 @@ namespace FriendshipService.Services
             var friends = await _dbContext.Friendships.Where(f => (f.User_1_AuthzId == userId || f.User_2_AuthzId == userId) && f.Status == FriendshipStatus.Pending).ToListAsync();
             return friends;
         }
+        public async Task<bool> DeleteFriendshipsForUser(string authzId)
+        {
+            var friendshipsForUser = await _dbContext.Friendships.Where(f => f.User_1_AuthzId == authzId || f.User_2_AuthzId == authzId).FirstOrDefaultAsync();
+            if (friendshipToDelete != null)
+            {
+                _dbContext.Friendships.Remove(friendshipToDelete);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
 
         public async Task RespondToFriendshipRequest(int friendShipId,bool accept)
         {
