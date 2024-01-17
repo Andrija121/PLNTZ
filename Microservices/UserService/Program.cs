@@ -49,7 +49,7 @@ public class Program
     private static void WaitForDb(IServiceProvider services)
     {
         var retryCount = 0;
-        var maxRetries = 30; // Adjust as needed
+        var maxRetries = 60; // Adjust as needed
 
         while (retryCount < maxRetries)
         {

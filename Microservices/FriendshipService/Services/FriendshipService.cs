@@ -99,9 +99,9 @@ namespace FriendshipService.Services
         public async Task<bool> DeleteFriendshipsForUser(string authzId)
         {
             var friendshipsForUser = await _dbContext.Friendships.Where(f => f.User_1_AuthzId == authzId || f.User_2_AuthzId == authzId).FirstOrDefaultAsync();
-            if (friendshipToDelete != null)
+            if (friendshipsForUser != null)
             {
-                _dbContext.Friendships.Remove(friendshipToDelete);
+                _dbContext.Friendships.Remove(friendshipsForUser);
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
