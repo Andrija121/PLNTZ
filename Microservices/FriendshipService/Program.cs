@@ -39,6 +39,7 @@ public class Program
         .ConfigureLogging(logging =>
         {
             logging.AddConsole();
+
         })
         .ConfigureWebHostDefaults(webBuilder =>
         {
@@ -55,7 +56,7 @@ public class Program
             try
             {
                 var configuration = services.GetRequiredService<IConfiguration>();
-                var connectionString = configuration.GetConnectionString("FriendshipDB");
+                var connectionString = "Server=host.docker.internal,1402;Database=friendship_service;User=sa;Password=test@123;TrustServerCertificate=true";
 
                 using var client = new SqlConnection(connectionString);
                 client.Open();

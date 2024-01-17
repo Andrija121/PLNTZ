@@ -14,15 +14,20 @@ namespace FriendshipService
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            services.AddDbContext<FriendshipDBContext>(options =>
+            options.UseSqlServer("Server=host.docker.internal,1402;Database=friendship_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
             var rabbitMQConfig = Configuration.GetSection("RabbitMQ").Get<RabbitMQConfiguration>();
 
             var connectionFactory = new ConnectionFactory
             {
-                HostName = rabbitMQConfig.Hostname,
-                UserName = rabbitMQConfig.UserName,
-                Password = rabbitMQConfig.Password,
-                Port = rabbitMQConfig.Port
+                HostName = "host.docker.internal",
+                UserName = "guest",
+                Password = "guest",
+                Port = 5672
             };
+            Console.WriteLine(connectionFactory);
 
             var connection = connectionFactory.CreateConnection();
 
@@ -41,10 +46,6 @@ namespace FriendshipService
 
                 return new RabbitMQSerivce(rabbitMQConfig, producer, consumer);
             });
-
-
-            services.AddDbContext<FriendshipDBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("FriendshipDB"), sqlServerOption => sqlServerOption.EnableRetryOnFailure()));
 
             services.AddTransient<IFriendshipRepository, FriendshipRepository>();
             services.AddScoped<IFriendshipService, Services.FriendshipService>();

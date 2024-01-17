@@ -15,5 +15,6 @@ namespace UserService.Services
         Task<List<User>> GetAllUsersForCityAsync(string city);
         Task<User> GetUserByCountry(string country);
         Task<User> GetUserByCity(string city);
+        Task SendUserIdsForFriendship(string user1Id, string user2Id);
     }
 }

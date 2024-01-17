@@ -22,6 +22,20 @@ namespace UserService.Controllers
             if (user == null) return NotFound();
             return Ok(user);
         }
+        [HttpPost("add-friend")]
+        public async Task<IActionResult> SendUserIdsForFriendship(string user1Id, string user2Id)
+        {
+            try
+            {
+                await _userService.SendUserIdsForFriendship(user1Id, user2Id);
+                return Ok("Friendship request sent successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                return BadRequest($"Failed to send friendship request: {ex.Message}");
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()

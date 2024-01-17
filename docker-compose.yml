@@ -18,8 +18,8 @@ services:
       - backend
 
   friendship_db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: friendship_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       SA_PASSWORD: "test@123"
       ACCEPT_EULA: Y
@@ -37,7 +37,7 @@ services:
     depends_on:
       - friendship_db
     build:
-      context: ./Microservices/FriendshipService
+      context: .
       dockerfile: Dockerfile
     environment:
       - DbServer=db
@@ -46,6 +46,12 @@ services:
       - Password=test@123
       - DbName=friendship_service
     container_name: friendship_service
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:1433"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    entrypoint: ["dotnet", "./FriendshipService/FriendshipService.dll"]
     ports:
       - "8082:8080"
     networks:
@@ -56,7 +62,7 @@ services:
     container_name: user_service
     image: ${DOCKER_REGISTRY-}userservice
     build:
-      context: ./Microservices/UserService
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8081:8080"
@@ -68,6 +74,12 @@ services:
       - DbUser=sa
       - Password=test@123
       - DbName=user_service
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:1433"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    entrypoint: ["dotnet", "./UserService/UserService.dll"]
     networks:
       - backend
 
@@ -87,6 +99,10 @@ services:
     container_name: rabbitmq
     ports:
       - 5672:5672
+      # - 15672:15672
+    networks:
+      - backend
+
 
 networks:
   backend:

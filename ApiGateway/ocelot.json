@@ -19,6 +19,23 @@
       "DownstreamPathTemplate": "/api/User"
     },
     {
+      "UpstreamPathTemplate": "/api/User/add-friend",
+      "UpstreamHttpMethod": ["Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/add-friend"
+    },
+    {
       "UpstreamPathTemplate": "/api/User/country/{country}",
       "UpstreamHttpMethod": [ "Get" ],
       "AuthenticationOptions": {

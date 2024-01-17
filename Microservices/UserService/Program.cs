@@ -56,7 +56,7 @@ public class Program
             try
             {
                 var configuration = services.GetRequiredService<IConfiguration>();
-                var connectionString = configuration.GetConnectionString("UserDB");
+                var connectionString = "Server=host.docker.internal,1401;Database=user_service;User=sa;Password=test@123;TrustServerCertificate=true";
 
                 using var client = new SqlConnection(connectionString);
                 client.Open();

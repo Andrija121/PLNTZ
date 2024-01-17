@@ -26,11 +26,11 @@ namespace FriendshipService.Controllers
             return Ok(friendships);
         }
         [HttpPost("send-request")]
-        public async Task<IActionResult> SendFriendshipRequest([FromBody] FriendshipRequestDto friendshipRequest)
+        public async Task<IActionResult> SendFriendshipRequest()
         {
             try
             {
-                await _friendshipService.SendFriendshipRequest(friendshipRequest.SenderId, friendshipRequest.RecipientId);
+                await _friendshipService.SendFriendshipRequest();
                 return Ok("Friendship request sent successfully");
             }
             catch (Exception ex)
@@ -55,8 +55,6 @@ namespace FriendshipService.Controllers
 
     public class FriendshipRequestDto
     {
-        public string SenderId { get; set; }
-        public string RecipientId { get; set; }
     }
 
     public class FriendshipStatusDto

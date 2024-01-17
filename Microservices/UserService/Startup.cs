@@ -21,14 +21,17 @@ namespace UserService
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<UserDBContext>(options =>
+            options.UseSqlServer("Server=host.docker.internal,1401;Database=user_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
             var rabbitMQConfig = Configuration.GetSection("RabbitMQ").Get<RabbitMQConfiguration>();
-            
+
             var connectionFactory = new ConnectionFactory
             {
-                HostName = rabbitMQConfig.Hostname,
-                UserName= rabbitMQConfig.UserName,
-                Password = rabbitMQConfig.Password,
-                Port = rabbitMQConfig.Port  
+                HostName = "host.docker.internal",
+                UserName = "guest",
+                Password = "guest",
+                Port = 5672
             };
 
             var connection = connectionFactory.CreateConnection();
@@ -49,10 +52,7 @@ namespace UserService
                 return new RabbitMQSerivce(rabbitMQConfig, producer, consumer);
             });
 
-            services.AddDbContext<UserDBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("UserDB"),sqlServerOption => sqlServerOption.EnableRetryOnFailure()));
-
-            services.AddTransient<IUserRepository,UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             //services.AddMvc();
 
             services.AddScoped<IUserService, Services.UserService>();
@@ -76,7 +76,7 @@ namespace UserService
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => 
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapSwagger();
                 endpoints.MapControllers();

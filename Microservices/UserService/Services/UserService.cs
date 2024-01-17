@@ -113,6 +113,20 @@ namespace UserService.Services
             }
             return users_city;
         }
+        public async Task SendUserIdsForFriendship(string user1id, string user2id)
+        {
+            User? user1 = await _dbContext.Users.FirstOrDefaultAsync(u => u.AuthzId == user1id);
+            User? user2 = await _dbContext.Users.FirstOrDefaultAsync(u=>u.AuthzId ==user2id);
+
+            if (user1 == null || user2 == null)
+            {
+                throw new Exception("One or both users not found");
+            }
+
+            string message = $"{user1.AuthzId}, {user2.AuthzId}";
+
+            SendMessage(message);
+        }
 
         public Task<User> GetUserByCountry(string country)
         {
