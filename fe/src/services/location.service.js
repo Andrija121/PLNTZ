@@ -35,3 +35,29 @@ export const getUsersByCity = async (accessToken, city) => {
     error,
   };
 };
+
+export const SendUserIdsForFriendship = async (
+  accessToken,
+  user1Id,
+  user2Id
+) => {
+  const config = {
+    url: `${apiServerUrl}/api/User/add-friend`,
+    method: "Post",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      user1Id,
+      user2Id,
+    },
+  };
+
+  const { data, error } = await callExternalApi({ config });
+
+  return {
+    data: data || null,
+    error,
+  };
+};

@@ -64,10 +64,6 @@ namespace FriendshipService.Controllers
         }
     }
 
-    public class FriendshipRequestDto
-    {
-    }
-
     public class FriendshipStatusDto
     {
         public bool Accept { get; set; }

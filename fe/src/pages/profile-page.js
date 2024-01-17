@@ -7,6 +7,7 @@ import {
   updateUser,
   deleteUser,
 } from "../services/user.service";
+import { deleteFriendshipForUser } from "../services/friendship.service";
 
 // TO BE FIXED HOW STATES CHANGE WHEN TOGGLING BETWEEN SAVED CHANGES AND EDIT USER button
 
@@ -15,6 +16,7 @@ export const Profile = () => {
   const currentDate = new Date();
   const isoDateString = currentDate.toISOString();
   const [userData, setUserData] = useState(null);
+  const [deletionResult, setDeletionResult] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editUserData, setEditUserData] = useState({
     authzId: user.sub.replace(/^auth0\|/, ""),
@@ -44,11 +46,11 @@ export const Profile = () => {
       },
     });
   };
-  const handleDeleteUser = async () => {
+  const handleDeleteFriendshipsAndUser = async () => {
     try {
       // Ask for confirmation before proceeding with deletion
       const confirmed = window.confirm(
-        "Are you sure you want to delete your account?"
+        "Are you sure you want to delete your account and friendships?"
       );
 
       if (!confirmed) {
@@ -56,19 +58,33 @@ export const Profile = () => {
       }
 
       const accessToken = await getAccessTokenSilently();
-      const { error } = await deleteUser(
+      const authzId = user.sub.replace(/^auth0\|/, "");
+
+      // Delete friendships if they exist
+      const friendshipResult = await deleteFriendshipForUser(
         accessToken,
-        user.sub.replace(/^auth0\|/, "")
+        authzId
       );
 
-      if (error) {
-        console.error("Error deleting user:", error);
+      if (friendshipResult.error) {
+        console.error("Error deleting friendships:", friendshipResult.error);
+        setDeletionResult("Error deleting friendships.");
+      }
+
+      // Delete the user
+      const userResult = await deleteUser(accessToken, authzId);
+
+      if (userResult.error) {
+        console.error("Error deleting user:", userResult.error);
+        setDeletionResult("Error deleting user.");
       } else {
         // Update the users state by removing the deleted user
-        handleLogout();
+        setDeletionResult("User and friendships deleted successfully.");
+        handleLogout(); // or perform any other necessary actions after successful deletion
       }
     } catch (error) {
       console.error("Error deleting user:", error);
+      setDeletionResult("An unexpected error occurred.");
     }
   };
 
@@ -361,10 +377,11 @@ export const Profile = () => {
             <button
               className="button__logout"
               style={{ marginTop: "10px" }}
-              onClick={handleDeleteUser}
+              onClick={handleDeleteFriendshipsAndUser}
             >
               Delete My Account
             </button>
+            {deletionResult && <p>{deletionResult}</p>}
           </div>
         </div>
       </div>

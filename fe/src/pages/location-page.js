@@ -7,7 +7,9 @@ import { getUserWithAuthZId } from "../services/user.service";
 import {
   getUsersByCity,
   getUsersByCountry,
+  SendUserIdsForFriendship,
 } from "../services/location.service";
+import { SendFriendshipRequest } from "../services/friendship.service";
 
 const countries = [
   "USA",
@@ -38,6 +40,7 @@ export const LocationPage = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [friendshipStatus, setFriendshipStatus] = useState({});
 
   const handleLocationChange = async (location) => {
     setSelectedLocation(location);
@@ -61,11 +64,38 @@ export const LocationPage = () => {
       if (result.error) {
         setError(result.error);
       } else {
-        console.log(result.data);
         setUsers(result.data);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
+    }
+  };
+
+  const handleAddFriend = async (friendId) => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+
+      // Send user IDs for friendship
+      await SendUserIdsForFriendship(
+        accessToken,
+        user.sub.replace(/^auth0\|/, ""),
+        friendId
+      );
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      await SendFriendshipRequest(accessToken);
+      setFriendshipStatus((prevStatus) => ({
+        ...prevStatus,
+        [friendId]: true,
+      }));
+
+      // Send friendship request
+
+      // You can optionally handle the success or show a message to the user
+      console.log("Friendship request sent successfully");
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding friend:", error);
     }
   };
 
@@ -83,9 +113,6 @@ export const LocationPage = () => {
           accessToken,
           user.sub.replace(/^auth0\|/, "")
         );
-
-        console.log("userData:", userData);
-        console.log("userError:", userError);
 
         // Check if location is not set, redirect to profile page
         if (userData.city == null || userData.country == null) {
@@ -192,9 +219,12 @@ export const LocationPage = () => {
                             fontSize: "1.5rem",
                             cursor: "pointer",
                           }}
-                          onClick={() => alert("handleAddFriend(user.authzId)")}
+                          onClick={() => handleAddFriend(user.authzId)}
+                          disabled={friendshipStatus[user.authzId]}
                         >
-                          Add Friend +
+                          {friendshipStatus[user.authzId]
+                            ? "Friend Request Sent"
+                            : "Add Friend +"}
                         </button>
                       </div>
                     ))}

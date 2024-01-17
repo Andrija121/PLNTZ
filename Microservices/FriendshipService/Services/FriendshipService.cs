@@ -123,18 +123,7 @@ namespace FriendshipService.Services
                     throw new Exception("Friendship request is not pending");
                 }
 
-                if (accept)
-                {
-                    friendship.Status = FriendshipStatus.Accepted;
-                }
-                else if (!accept)
-                {
-                    friendship.Status = FriendshipStatus.Declined;
-                }
-                else
-                {
-                    friendship.Status = FriendshipStatus.Pending;
-                }
+                friendship.Status = accept ? FriendshipStatus.Accepted : FriendshipStatus.Declined;
 
                 // Update the database with the new status
                 await _dbContext.SaveChangesAsync();

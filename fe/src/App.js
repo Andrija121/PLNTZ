@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "./components/page-loader";
 import { Profile } from "./pages/profile-page";
+import { FriendsPage } from "./pages/friends-page";
 import { CallbackPage } from "./pages/callback-page";
 import { AuthenticationGuard } from "./components/authentication-guard";
 import { HomePage } from "./pages/home-page";
@@ -38,6 +39,12 @@ export const App = () => {
       <Route
         path="/profile"
         element={<AuthenticationGuard component={Profile} requiredRoles={[]} />}
+      />
+      <Route
+        path="/friendships"
+        element={
+          <AuthenticationGuard component={FriendsPage} requiredRoles={[]} />
+        }
       />
       <Route path="/callback" element={<CallbackPage />} />
       <Route path="*" element={<NotFoundPage />} />

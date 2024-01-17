@@ -1,12 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useEffect, useState } from "react";
-import { CodeSnippet } from "../components/code-snippet";
+import React, { useEffect } from "react";
 import { PageLayout } from "../components/page-layout";
 import { getAdminResource } from "../services/message.service";
 
 export const AdminPage = () => {
-  const [message, setMessage] = useState("");
-
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -21,11 +18,11 @@ export const AdminPage = () => {
       }
 
       if (data) {
-        setMessage(JSON.stringify(data, null, 2));
+        return;
       }
 
       if (error) {
-        setMessage(JSON.stringify(error, null, 2));
+        return;
       }
     };
 
@@ -45,18 +42,11 @@ export const AdminPage = () => {
         <div className="content__body">
           <p id="page-description">
             <span>
-              This page retrieves an <strong>admin message</strong> from an
-              external API.
-            </span>
-            <span>
-              <strong>
-                Only authenticated users with the{" "}
-                <code>read:admin-messages</code> permission should access this
-                page.
-              </strong>
+              This confirms that only Admin can retrieve this page and an{" "}
+              <strong>admin message</strong> from an external API.
             </span>
           </p>
-          <CodeSnippet title="Admin Message" code={message} />
+          <code> Hi you are an Admin, welcome back !</code>
         </div>
       </div>
     </PageLayout>

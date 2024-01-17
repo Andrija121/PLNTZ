@@ -32,8 +32,6 @@ namespace UserService.Services
             {
                 throw new Exception($"User with EMAIL {user.Email}");
             }
-
-            SendMessage($"User with {user.AuthzId} created");
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
 
