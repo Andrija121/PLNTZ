@@ -27,8 +27,8 @@ jobs:
       - name: Build and push Docker images
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/friendship-service:latest ./Microservices/FriendshipService
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/user-service:latest ./Microservices/UserService
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/friendship-service:latest .
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/user-service:latest .
           docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/apigateway:latest ./APIGateway
           docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/rabbitmq:3-management-alpine ./RabbitMQ
           docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/react-frontend:latest ./fe
