@@ -4,7 +4,7 @@ services:
 
   user_db:
     container_name: user_db
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: andrija121/user_db
     environment:
       SA_PASSWORD: "test@123"
       ACCEPT_EULA: Y
@@ -19,7 +19,7 @@ services:
 
   friendship_db:
     container_name: friendship_db
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: andrija121/friendship_db
     environment:
       SA_PASSWORD: "test@123"
       ACCEPT_EULA: Y
@@ -33,7 +33,7 @@ services:
       - backend
   
   friendship-service:
-    image: ${DOCKER_REGISTRY-}friendshipservice
+    image: andrija121/friendshipservice
     depends_on:
       - friendship_db
     build:
@@ -60,7 +60,7 @@ services:
 
   user-service:
     container_name: user_service
-    image: ${DOCKER_REGISTRY-}userservice
+    image: andrija121/userservice
     build:
       context: .
       dockerfile: Dockerfile
@@ -82,10 +82,19 @@ services:
     entrypoint: ["dotnet", "./UserService/UserService.dll"]
     networks:
       - backend
+  
+  frontend:
+    container_name: react_frontend
+    image: andrija121/frontend
+    build: 
+      context: ./fe/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
 
   apigateway:
     container_name: api-gateway
-    image: ${DOCKER_REGISTRY-}apigateway
+    image: andrija121/apigateway
     build:
       context: ./APIGateway/
       dockerfile: Dockerfile
@@ -95,7 +104,7 @@ services:
       - backend
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: andrija121/rabbitmq
     container_name: rabbitmq
     ports:
       - 5672:5672
