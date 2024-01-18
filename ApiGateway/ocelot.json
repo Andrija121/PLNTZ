@@ -2,7 +2,7 @@
   "Routes": [
     //User Web API
     {
-      "UpstreamPathTemplate": "/api/v1/User",
+      "UpstreamPathTemplate": "/api/User",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
@@ -16,10 +16,61 @@
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/api/v1/User"
+      "DownstreamPathTemplate": "/api/User"
     },
     {
-      "UpstreamPathTemplate": "/api/v1/User/{userId}",
+      "UpstreamPathTemplate": "/api/User/add-friend",
+      "UpstreamHttpMethod": ["Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/add-friend"
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/country/{country}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/country/{country}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/city/{city}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-service", //user-service
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/User/city/{city}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/{authzId}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
@@ -33,7 +84,75 @@
           "Port": 8080
         }
       ],
-      "DownstreamPathTemplate": "/api/v1/User/{userId}"
+      "DownstreamPathTemplate": "/api/User/{authzId}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/{userId}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service (Get Friends)
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/{userId}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/pending/{userId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service (Get Pending Friends)
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/pending/{userId}"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/send-request",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service (send request)
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/send-request"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Friendship/respond-request/{friendshipId}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKey": "ProviderKey"
+      },
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "friendship-service", //friendship-service (respond-request)
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Friendship/respond-request/{friendshipId}"
     }
   ],
 

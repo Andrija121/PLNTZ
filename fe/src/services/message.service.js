@@ -4,7 +4,7 @@ const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 
 export const getPublicResource = async (accessToken) => {
   const config = {
-    url: `${apiServerUrl}/api/v1/User`,
+    url: `${apiServerUrl}/api/User`,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -22,7 +22,7 @@ export const getPublicResource = async (accessToken) => {
 
 export const getProtectedResource = async (accessToken) => {
   const config = {
-    url: `${apiServerUrl}/api/v1/User/2`,
+    url: `${apiServerUrl}/api/User/2`,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -44,7 +44,7 @@ export const getProtectedResource = async (accessToken) => {
 
 export const getAdminResource = async (accessToken) => {
   const config = {
-    url: `${apiServerUrl}/api/v1/User/1`,
+    url: `${apiServerUrl}/api/User/1`,
     method: "GET",
     headers: {
       "content-type": "application/json",

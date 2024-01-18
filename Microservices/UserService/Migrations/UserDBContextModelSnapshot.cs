@@ -22,102 +22,64 @@ namespace UserService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("UserService.Identity.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AddressNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("UserService.Identity.Role", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("UserService.Identity.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("AuthzId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<DateOnly>("Birthday")
+                    b.Property<DateOnly?>("Birthday")
                         .HasColumnType("date");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Last_seen")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("AuthzId");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            AddressId = 1,
+                            AuthzId = "6567896db88a4affe7295ec2",
                             Birthday = new DateOnly(2001, 1, 26),
+                            City = "Eindhoven",
+                            Country = "Netherlands",
+                            Email = "a.hanga@student.fontys.nl",
                             FirstName = "Andrija",
                             IsActive = true,
                             LastName = "Hanga",
-                            Last_seen = new DateTime(2023, 11, 25, 17, 37, 49, 723, DateTimeKind.Utc).AddTicks(1529),
-                            Password = "andrija123",
-                            RoleId = 1
+                            Last_seen = new DateTime(2024, 1, 8, 13, 18, 46, 567, DateTimeKind.Utc).AddTicks(5872)
+                        },
+                        new
+                        {
+                            AuthzId = "6567896db88a4affe7295ec2123",
+                            Birthday = new DateOnly(2001, 1, 26),
+                            City = "New York",
+                            Country = "The Netherlands",
+                            Email = "a.hanga123@student.fontys.nl",
+                            FirstName = "Andrija123",
+                            IsActive = true,
+                            LastName = "Hanga123",
+                            Last_seen = new DateTime(2024, 1, 8, 13, 18, 46, 567, DateTimeKind.Utc).AddTicks(5876)
                         });
                 });
 #pragma warning restore 612, 618

@@ -4,7 +4,7 @@ import {
   updateUser,
   deleteUser,
   getAllUsers,
-  getUserWithId,
+  getUserWithAuthZId,
 } from "../services/user.service";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PageLayout } from "../components/page-layout";
@@ -14,14 +14,13 @@ export const UserServicePage = () => {
   const [fetchedUser, setFetchedUser] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
   const [newUser, setNewUser] = useState({
+    authzId: "",
+    email: "",
     firstName: "",
     lastName: "",
-    password: "",
     birthday: "",
     lastSeen: "",
     isActive: false,
-    roleId: 0,
-    addressId: 0,
   });
 
   useEffect(() => {
@@ -53,26 +52,24 @@ export const UserServicePage = () => {
         ...newUser,
         lastSeen: formattedDate,
         isActive: true,
-        roleId: 1,
-        addressId: 1,
       };
 
       const { data, error } = await createUser(accessToken, createdUserData);
       if (error) {
         console.error("Error creating user:", error);
+        alert(`Error creating user: ${error}`);
       } else {
         // Update the users state with the new user
         setUsers((prevUsers) => [...prevUsers, data]);
 
         setNewUser({
+          authzId: "",
+          email: "",
           firstName: "",
           lastName: "",
-          password: "",
           birthday: "",
           lastSeen: "",
           isActive: false,
-          roleId: 0,
-          addressId: 0,
         });
       }
     } catch (error) {
@@ -80,21 +77,19 @@ export const UserServicePage = () => {
     }
   };
 
-  const handleUpdateUser = async (id, updatedUserData) => {
-    console.log("handleUpdateUser called with:", { id, updatedUserData });
+  const handleUpdateUser = async (authzId, updatedUserData) => {
+    console.log("handleUpdateUser called with:", { authzId, updatedUserData });
     try {
       const accessToken = await getAccessTokenSilently();
-      const currentUser = users.find((user) => user.id === id);
+      const currentUser = users.find((user) => user.authzId === authzId);
       const updatedUserData = {
         firstName: newUser.firstName || currentUser.firstName,
         lastName: newUser.lastName || currentUser.lastName,
-        password: newUser.password || currentUser.password,
         birthday: newUser.birthday || currentUser.birthday,
-        // Add other fields as needed
       };
       const { error } = await updateUser(
         accessToken,
-        id,
+        authzId,
         JSON.stringify(updatedUserData)
       );
 
@@ -104,7 +99,7 @@ export const UserServicePage = () => {
         // Update the users state with the updated user
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user.id === id ? { ...user, ...updatedUserData } : user
+            user.authzId === authzId ? { ...user, ...updatedUserData } : user
           )
         );
       }
@@ -113,25 +108,27 @@ export const UserServicePage = () => {
     }
   };
 
-  const handleDeleteUser = async (id) => {
+  const handleDeleteUser = async (authzId) => {
     try {
       const accessToken = await getAccessTokenSilently();
-      const { error } = await deleteUser(accessToken, id);
+      const { error } = await deleteUser(accessToken, authzId);
       if (error) {
         console.error("Error deleting user:", error);
       } else {
         // Update the users state by removing the deleted user
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user.authzId !== authzId)
+        );
       }
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  const handleFetchUser = async (id) => {
+  const handleFetchUser = async (authzId) => {
     try {
       const accessToken = await getAccessTokenSilently();
-      const { data, error } = await getUserWithId(accessToken, id);
+      const { data, error } = await getUserWithAuthZId(accessToken, authzId);
       if (error) {
         console.error("Error fetching user:", error);
       } else {
@@ -141,7 +138,7 @@ export const UserServicePage = () => {
         // Update the state with the fetched user data
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user.id === id ? { ...user, ...data } : user
+            user.authzId === authzId ? { ...user, ...data } : user
           )
         );
         setFetchedUser(data);
@@ -150,9 +147,6 @@ export const UserServicePage = () => {
       console.error("Error fetching user:", error);
     }
   };
-  function maskPassword(password) {
-    return "*".repeat(password.length);
-  }
 
   return (
     <PageLayout>
@@ -165,21 +159,21 @@ export const UserServicePage = () => {
             {/* Display users */}
             <ul>
               {users.map((user) => (
-                <li key={user.id}>
+                <li key={user.authzId}>
                   {user.firstName} - {user.lastName} - {user.birthday} -{" "}
-                  {maskPassword(user.password)}
+                  {user.authzId}
                   {/* Add other fields as needed */}
                   <button
                     style={{ backgroundColor: "blue", margin: "10px" }}
                     className="button"
-                    onClick={() => handleUpdateUser(user.id)}
+                    onClick={() => handleUpdateUser(user.authzId)}
                   >
                     Update
                   </button>
                   <button
                     style={{ backgroundColor: "blue", margin: "10px" }}
                     className="button"
-                    onClick={() => handleDeleteUser(user.id)}
+                    onClick={() => handleDeleteUser(user.authzId)}
                   >
                     Delete
                   </button>
@@ -189,7 +183,7 @@ export const UserServicePage = () => {
                       marginLeft: "10px",
                     }}
                     className="button"
-                    onClick={() => handleFetchUser(user.id)}
+                    onClick={() => handleFetchUser(user.authzId)}
                   >
                     Fetch User
                   </button>
@@ -220,7 +214,7 @@ export const UserServicePage = () => {
                   Fetched User Details
                 </h1>
                 <p style={{ marginLeft: "5px", fontSize: "20px" }}>
-                  ID: {fetchedUser.id};
+                  ID: {fetchedUser.authzId};
                 </p>
                 <p style={{ marginLeft: "5px", fontSize: "20px" }}>
                   Name: {fetchedUser.firstName} {fetchedUser.lastName};
@@ -234,7 +228,7 @@ export const UserServicePage = () => {
                     fontSize: "20px",
                   }}
                 >
-                  Password: {maskPassword(fetchedUser.password)};
+                  Authz ID: {fetchedUser.authzId};
                 </p>
                 {/* Add other fields as needed */}
               </div>
@@ -244,7 +238,6 @@ export const UserServicePage = () => {
             <div
               style={{
                 width: "200px",
-                display: "flex",
                 margin: "30px  ",
                 alignItems: "center",
                 alignContent: "center",
@@ -281,12 +274,22 @@ export const UserServicePage = () => {
                 />
               </label>
               <label style={{ marginInline: "5px" }}>
-                Password:
+                Auth0Id:
                 <input
-                  type="password"
-                  value={newUser.password}
+                  type="text"
+                  value={newUser.authzId}
                   onChange={(e) =>
-                    setNewUser({ ...newUser, password: e.target.value })
+                    setNewUser({ ...newUser, authzId: e.target.value })
+                  }
+                />
+              </label>
+              <label style={{ marginInline: "5px" }}>
+                Email:
+                <input
+                  type="email"
+                  value={newUser.email}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, email: e.target.value })
                   }
                 />
               </label>
@@ -300,7 +303,6 @@ export const UserServicePage = () => {
                   }
                 />
               </label>
-              {/* Add other fields as needed */}
               <button
                 style={{ margin: "10px", width: "110px" }}
                 className="button__login"

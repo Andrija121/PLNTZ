@@ -13,18 +13,49 @@ namespace UserService.Repository
 
         public void CreateUser(User user)
         {
+            var users = GetUsers();
+            if (users.Any(u => u.Email == user.Email || u.AuthzId == user.AuthzId))
+            {
+                throw new Exception($"User with EMAIL {user.Email}, or {user.AuthzId} already exists");
+            }
             _dbContext.Users.Add(user);
         }
 
-        public void DeleteUser(int user_id)
+        public void DeleteUserByAuth0Id(string auth0Id)
         {
-            var user = _dbContext.Users.Find(user_id);
-            _dbContext.Users.Remove(user);
-            Save();
+            var user = _dbContext.Users.Find(auth0Id);
+            _dbContext.Users.Remove(user); Save();
         }
 
+        public IEnumerable<User> GetAllUsersForCity(string city)
+        {
+            List<User> users = _dbContext.Users.ToList().FindAll(u => u.City == city);
+            return users;
+        }
 
-        public User GetUserById(int user_id) => _dbContext.Users.Find(user_id);
+        public IEnumerable<User> GetAllUsersForCountry(string country)
+        {
+            List<User> users = _dbContext.Users.ToList().FindAll(u => u.Country == country);
+            return users;
+        }
+
+        public User GetUserByAuth0Id(string authzId)
+        {
+            User? user = _dbContext.Users.FirstOrDefault(u => u.AuthzId == authzId);
+            return user;
+        }
+
+        public User GetUserByCity(string city)
+        {
+            User user = _dbContext.Users.FirstOrDefault(u =>u.City == city);
+            return user;
+        }
+
+        public User GetUserByCountry(string country)
+        {
+            User user = _dbContext.Users.FirstOrDefault(u => u.Country== country);
+            return user;
+        }
 
         public IEnumerable<User> GetUsers()
         {

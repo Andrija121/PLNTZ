@@ -1,0 +1,38 @@
+﻿services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: friendship_db
+    environment:
+      SA_PASSWORD: "test@123"
+      ACCEPT_EULA: Y
+    ports:
+      - "1402:1433"
+    # volumes:
+    #   - ./data:/var/opt/mssql/data
+    #   - ./log:/var/mssql/log
+    #   - ./secrets:/var/opt/mssql/secrets 
+    networks:
+      - backend
+  
+  friendship-service:
+    depends_on:
+      - db
+    image: friendship-image:tag
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DbServer=db
+      - DbPort=1402
+      - DbUser=sa
+      - Password=test@123
+      - DbName=friendship_service
+    container_name: friendship_service
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
