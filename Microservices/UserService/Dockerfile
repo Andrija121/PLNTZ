@@ -8,11 +8,20 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
 COPY ["UserService.csproj", "."]
+COPY ["RabbitMQ/Rabbit.csproj", "RabbitMQ/"]
 RUN dotnet restore "UserService.csproj"
+RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+
 COPY . .
-WORKDIR "/src"
+
+WORKDIR "/src/UserService"
 RUN dotnet build "UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Build the RabbitMQ project
+WORKDIR "/src/RabbitMQ"
+RUN dotnet build "Rabbit.csproj" -c $BUILD_CONFIGURATION -o /app/build-rabbit
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
