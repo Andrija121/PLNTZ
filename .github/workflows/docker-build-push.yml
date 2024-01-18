@@ -27,14 +27,14 @@ jobs:
       - name: Build and push Docker images
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/friendship-service:latest .
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/user-service:latest .
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/apigateway:latest /ApiGateway
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/rabbitmq:3-management-alpine /RabbitMQ
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/react-frontend:latest /fe
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/friendshipservice:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/userservice:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/apigateway:latest --push ./ApiGateway
+          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/frontend:latest --push ./fe
+          
+      - name: Pull and push RabbitMQ image
+        run: |
+          docker pull rabbitmq:3-management-alpine
+          docker tag rabbitmq:3-management-alpine andrija121/rabbitmq
+          docker push andrija121/rabbitmq
 
-          docker push andrija121/user-service:latest
-          docker push andrija121/friendship-service:latest
-          docker push andrija121/apigateway:latest
-          docker push andrija121/rabbitmq:3-management-alpine
-          docker push andrija121/react-frontend:latest
