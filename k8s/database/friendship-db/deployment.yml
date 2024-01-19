@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: friendship-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: friendship-db
+  template:
+    metadata:
+      labels:
+        app: friendship-db
+    spec:
+      securityContext:
+        runAsUser: 0  # Run the container as root
+      containers:
+        - name: friendship-db
+          image: andrija121/friendship_db:latest  # Replace with your actual image
+          ports:
+            - containerPort: 1433  # Adjust the port if needed
+          env:
+            - name: SA_PASSWORD
+              value: "test@123"  # Set your desired password
+            - name: ACCEPT_EULA
+              value: "Y"
+          volumeMounts:
+            - mountPath: "/var/opt/mssql/data"
+              name: friendship-db-storage
+      volumes:
+        - name: friendship-db-storage
+          persistentVolumeClaim:
+            claimName: friendship-db-pvc

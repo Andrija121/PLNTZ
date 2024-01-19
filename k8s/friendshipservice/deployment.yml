@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: friendshipservice
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: friendshipservice
+    template:
+        metadata:
+            labels:
+                app: friendshipservice
+        spec:
+            containers:
+                - name: friendshipservice
+                  image: andrija121/friendshipservice:latest
+                  ports:
+                    - containerPort: 8080
+                  envFrom:
+                    - configMapRef:
+                        name: friendshipservice-config

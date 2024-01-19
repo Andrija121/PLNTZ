@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db
+    spec:
+      securityContext:
+        runAsUser: 0  # Run the container as root
+      containers:
+        - name: user-db
+          image: andrija121/user_db:latest  # Replace with your actual image
+          ports:
+            - containerPort: 1433  # Adjust the port if needed
+          env:
+            - name: SA_PASSWORD
+              value: "test@123"  # Set your desired password
+            - name: ACCEPT_EULA
+              value: "Y"
+          volumeMounts:
+            - mountPath: "/var/opt/mssql/data"
+              name: user-db-storage
+      volumes:
+        - name: user-db-storage
+          persistentVolumeClaim:
+            claimName: user-db-pvc

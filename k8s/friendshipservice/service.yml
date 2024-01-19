@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: friendshipservice
+spec:
+    selector:
+        app: friendshipservice
+    ports:
+        - protocol: TCP
+          port: 8082 #8080
+          targetPort: 8080
+    type: ClusterIP

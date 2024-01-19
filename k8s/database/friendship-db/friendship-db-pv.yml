@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: friendship-db-pv
+spec:
+  capacity:
+    storage: 2Gi  # Set the desired storage size
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: ././././Microservices/FriendshipService/data # Replace with the path on the host where data is stored

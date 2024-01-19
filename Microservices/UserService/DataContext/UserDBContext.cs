@@ -32,7 +32,7 @@ namespace UserService.Data
                     LastName = "Hanga123",
                     Birthday = new DateOnly(2001, 01, 26),
                     Country = "The Netherlands",
-                    City = "New York",
+                    City = "Rotterdam",
                     Last_seen = DateTime.UtcNow,
                     IsActive = true
                 }

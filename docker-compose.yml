@@ -29,16 +29,11 @@ services:
       - ./Microservices/FriendshipService/data:/var/opt/mssql/data
       - ./Microservices/FriendshipService/log:/var/mssql/log
       - ./Microservices/FriendshipService/secrets:/var/opt/mssql/secrets 
-    networks:
-      - backend
   
   friendship-service:
     image: andrija121/friendshipservice
     depends_on:
       - friendship_db
-    build:
-      context: .
-      dockerfile: Dockerfile
     environment:
       - DbServer=db
       - DbPort=1402
@@ -61,9 +56,6 @@ services:
   user-service:
     container_name: user_service
     image: andrija121/userservice
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "8081:8080"
     depends_on:
@@ -86,18 +78,12 @@ services:
   frontend:
     container_name: react_frontend
     image: andrija121/frontend
-    build: 
-      context: ./fe/
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
 
   apigateway:
     container_name: api-gateway
     image: andrija121/apigateway
-    build:
-      context: ./APIGateway/
-      dockerfile: Dockerfile
     ports:
       - "8001:8080"
     networks:
