@@ -1,6 +1,8 @@
 {
-  "cSpell.words": [
-    "Planetz",
-    "plntz"
-  ]
+  "cSpell.words": ["Planetz", "plntz"],
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.showBuildDuringDeployPrompt": false
 }
