@@ -1,0 +1,37 @@
+name: Deploy to AKS
+
+on:
+  push:
+    paths:
+      - '**/*'
+      - '!/.github/workflows/**'    
+    branches: [ "master", "development" ]
+    
+  pull_request:
+      paths:
+        - '**/*'
+        - '!/.github/workflows/**'
+      branches: [ "master", "development" ]  
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTAILS }}
+
+    - name: Set Azure Subscription
+      run: az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION }}
+
+    - name: Get AKS Credentials
+      run: az aks get-credentials --admin --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME}}
+
+    - name: Install kubectl
+      run: az aks install-cli
