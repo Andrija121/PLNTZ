@@ -35,4 +35,5 @@ jobs:
 
     - name: Install kubectl
       run: az aks install-cli
-      
+
+    
