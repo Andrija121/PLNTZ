@@ -7,10 +7,6 @@ using System.Diagnostics;
 using UserService.Identity;
 using Microsoft.AspNetCore.Identity;
 using UserService.Repository;
-using RabbitMQ;
-using RabbitMQ.Client;
-using System.Text;
-using RabbitMQ.Client.Events;
 
 namespace UserService
 {
@@ -21,39 +17,16 @@ namespace UserService
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<UserDBContext>(options =>
-            options.UseSqlServer("Server=host.docker.internal,1401;Database=user_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
-            var rabbitMQConfig = Configuration.GetSection("RabbitMQ").Get<RabbitMQConfiguration>();
+            options.UseSqlServer(Configuration.GetConnectionString("UserDB"),sqlServerOption => sqlServerOption.EnableRetryOnFailure()));
 
-            var connectionFactory = new ConnectionFactory
+            services.AddTransient<IUserRepository,UserRepository>();
+            services.AddMvc();
+
+            services.AddSwaggerGen(c =>
             {
-                HostName = "host.docker.internal",
-                UserName = "guest",
-                Password = "guest",
-                Port = 5672
-            };
-
-            var connection = connectionFactory.CreateConnection();
-
-            // Create a channel for the producer
-            var producerChannel = connection.CreateModel();
-
-            // Create a channel for the consumer
-            var consumerChannel = connection.CreateModel();
-
-            services.AddSingleton(new RabbitMQProducer(producerChannel));
-            services.AddSingleton(new RabbitMQConsumer(consumerChannel));
-            services.AddSingleton<RabbitMQSerivce>(sp =>
-            {
-                var producer = sp.GetRequiredService<RabbitMQProducer>();
-                var consumer = sp.GetRequiredService<RabbitMQConsumer>();
-
-                return new RabbitMQSerivce(rabbitMQConfig, producer, consumer);
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Api ", Version = "v1" });
             });
-
-            services.AddTransient<IUserRepository, UserRepository>();
-            //services.AddMvc();
 
             services.AddScoped<IUserService, Services.UserService>();
             services.AddControllers();
@@ -72,11 +45,19 @@ namespace UserService
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            app.UseEndpoints(endpoints => 
             {
                 endpoints.MapSwagger();
                 endpoints.MapControllers();

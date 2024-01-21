@@ -15,7 +15,7 @@
 }
 body {
     /* Hide scrollbars */
-    overflow:auto;
+    overflow: hidden;
 }
 .walkingText{
     align-items: center;

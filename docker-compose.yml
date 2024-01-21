@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
 
-  user_db:
+  db:
     container_name: user_db
-    image: andrija121/user_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       SA_PASSWORD: "test@123"
       ACCEPT_EULA: Y
@@ -17,98 +17,34 @@ services:
     networks:
       - backend
 
-  friendship_db:
-    container_name: friendship_db
-    image: andrija121/friendship_db
-    environment:
-      SA_PASSWORD: "test@123"
-      ACCEPT_EULA: Y
-    ports:
-      - "1402:1433"
-    volumes:
-      - ./Microservices/FriendshipService/data:/var/opt/mssql/data
-      - ./Microservices/FriendshipService/log:/var/mssql/log
-      - ./Microservices/FriendshipService/secrets:/var/opt/mssql/secrets 
-    networks:
-      - backend
-  
-  friendship-service:
-    image: andrija121/friendshipservice
-    depends_on:
-      - friendship_db
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - DbServer=db
-      - DbPort=1402
-      - DbUser=sa
-      - Password=test@123
-      - DbName=friendship_service
-    container_name: friendship_service
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:1433"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
-    entrypoint: ["dotnet", "./FriendshipService/FriendshipService.dll"]
-    ports:
-      - "8082:8080"
-    networks:
-      - backend
-
 
   user-service:
     container_name: user_service
-    image: andrija121/userservice
+    image: ${DOCKER_REGISTRY-}userservice
     build:
-      context: .
+      context: ./Microservices/UserService
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8080:80"
     depends_on:
-      - user_db
+      - db
     environment:
       - DbServer=db
       - DbPort=1401
       - DbUser=sa
       - Password=test@123
       - DbName=user_service
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:1433"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
-    entrypoint: ["dotnet", "./UserService/UserService.dll"]
     networks:
       - backend
-  
-  frontend:
-    container_name: react_frontend
-    image: andrija121/frontend
-    build: 
-      context: ./fe/
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
 
   apigateway:
     container_name: api-gateway
-    image: andrija121/apigateway
+    image: ${DOCKER_REGISTRY-}apigateway
     build:
       context: ./APIGateway/
       dockerfile: Dockerfile
     ports:
       - "8001:8080"
-    networks:
-      - backend
-
-  rabbitmq:
-    image: andrija121/rabbitmq
-    container_name: rabbitmq
-    ports:
-      - 5672:5672
-      # - 15672:15672
     networks:
       - backend
 
