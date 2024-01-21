@@ -2,8 +2,16 @@ name: Deploy to AKS
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - '**/*'
+      - '!/.github/workflows/**'    
+    branches: [ "master", "development" ]
+    
+  pull_request:
+      paths:
+        - '**/*'
+        - '!/.github/workflows/**'
+      branches: [ "master", "development" ]  
 
 jobs:
   deploy:
