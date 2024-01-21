@@ -24,18 +24,17 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
       with:
-        dotnet-version: 8.0.x
-    - name: Show Directory Contents
-      run: ls -R
+        creds: ${{ secrets.AZURE_CREDENTAILS }}
 
-    - name: Restore dependencies
-      run: dotnet restore PLNTZ.sln
+    - name: Set Azure Subscription
+      run: az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION }}
 
-    - name: Build
-      run: dotnet build PLNTZ.sln --no-restore
+    - name: Get AKS Credentials
+      run: az aks get-credentials --admin --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME}}
 
-    - name: Test
-      run: dotnet test PLNTZ.sln --no-build --verbosity normal
+    - name: Install kubectl
+      run: az aks install-cli
