@@ -27,9 +27,7 @@ jobs:
       - name: Build and push Docker images
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/friendshipservice:latest --push .
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/userservice:latest --push .
-          docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/apigateway:latest --push ./ApiGateway
+          #docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/apigateway:latest --push ./ApiGateway
           docker buildx build --platform linux/amd64,linux/arm64 -t andrija121/frontend:latest --push ./fe
           
       - name: Pull and push RabbitMQ image

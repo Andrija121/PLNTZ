@@ -13,19 +13,19 @@ spec:
         app: friendship-db
     spec:
       securityContext:
-        runAsUser: 0  # Run the container as root
+        runAsUser: 0 # Run the container as root
       containers:
         - name: friendship-db
-          image: andrija121/friendship_db:latest  # Replace with your actual image
+          image: andrija121/friendship_db # Replace with your actual image
           ports:
-            - containerPort: 1433  # Adjust the port if needed
+            - containerPort: 1433 # Adjust the port if needed
           env:
             - name: SA_PASSWORD
-              value: "test@123"  # Set your desired password
+              value: "test@123" # Set your desired password
             - name: ACCEPT_EULA
               value: "Y"
           volumeMounts:
-            - mountPath: "/var/opt/mssql/data"
+            - mountPath: /opt/mssql/data
               name: friendship-db-storage
       volumes:
         - name: friendship-db-storage

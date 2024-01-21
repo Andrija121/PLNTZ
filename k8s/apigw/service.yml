@@ -7,6 +7,6 @@ spec:
     app: apigw
   ports:
     - protocol: TCP
-      port: 8001  # External port
-      targetPort: 8080  # Internal container port
-  type: ClusterIP
+      port: 8001 # External port
+      targetPort: 8080 # Internal container port
+  type: LoadBalancer

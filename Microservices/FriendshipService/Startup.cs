@@ -17,12 +17,12 @@ namespace FriendshipService
 
 
             services.AddDbContext<FriendshipDBContext>(options =>
-            options.UseSqlServer("Server=host.docker.internal,1402;Database=friendship_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
+            options.UseSqlServer("Server=tcp:friendship-db,1433;User ID=sa;Database=friendship_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
             var rabbitMQConfig = Configuration.GetSection("RabbitMQ").Get<RabbitMQConfiguration>();
 
             var connectionFactory = new ConnectionFactory
             {
-                HostName = "host.docker.internal",
+                HostName = "rabbitmq",
                 UserName = "guest",
                 Password = "guest",
                 Port = 5672

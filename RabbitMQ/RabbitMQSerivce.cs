@@ -30,7 +30,7 @@ namespace RabbitMQ
         {
             var factory = new ConnectionFactory
             {
-                HostName = "host.docker.internal",
+                HostName = "rabbitmq",
             };
 
             _connection = factory.CreateConnection();

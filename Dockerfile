@@ -1,79 +1,223 @@
-# Multi-stage Dockerfile for UserService and FriendshipService
+# # Multi-stage Dockerfile for UserService and FriendshipService
 
-# Build and publish stage for UserService
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS user_service_build_publish
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
+# # Build and publish stage for UserService
+# FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS user_service_build_publish
+# ARG BUILD_CONFIGURATION=Release
+# WORKDIR /src
 
-COPY ["Microservices/UserService/UserService.csproj", "Microservices/UserService/"]
-COPY ["RabbitMQ/Rabbit.csproj", "RabbitMQ/"]
-RUN dotnet restore "RabbitMQ/Rabbit.csproj"
-RUN dotnet restore "Microservices/UserService/UserService.csproj"
-COPY . .
-RUN dotnet build "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet publish "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# COPY ["Microservices/UserService/UserService.csproj", "Microservices/UserService/"]
+# COPY ["RabbitMQ/Rabbit.csproj", "RabbitMQ/"]
+# RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+# RUN dotnet restore "Microservices/UserService/UserService.csproj"
+# COPY . .
+# RUN dotnet build "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# RUN dotnet publish "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Build and publish stage for FriendshipService
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS friendship_service_build_publish
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
+# # Build and publish stage for FriendshipService
+# FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS friendship_service_build_publish
+# ARG BUILD_CONFIGURATION=Release
+# WORKDIR /src
 
-COPY ["Microservices/FriendshipService/FriendshipService.csproj", "Microservices/FriendshipService/"]
-COPY ["RabbitMQ/Rabbit.csproj", "RabbitMQ/"]
-RUN dotnet restore "Microservices/FriendshipService/FriendshipService.csproj"
-RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+# COPY ["Microservices/FriendshipService/FriendshipService.csproj", "Microservices/FriendshipService/"]
+# COPY ["RabbitMQ/Rabbit.csproj", "RabbitMQ/"]
+# RUN dotnet restore "Microservices/FriendshipService/FriendshipService.csproj"
+# RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+# COPY . .
+# RUN dotnet build "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# RUN dotnet publish "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Copy the rest of the solution
-COPY . .
-RUN dotnet build "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet publish "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# # Runtime stage
+# FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# USER app
+# WORKDIR /app
+# EXPOSE 8080
 
-# Runtime stage
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-USER app
-WORKDIR /app
-EXPOSE 8080
+# # Copy published artifacts from UserService and FriendshipService
+# COPY --from=user_service_build_publish /app/publish ./UserService
+# COPY --from=friendship_service_build_publish /app/publish ./FriendshipService
 
-# Copy published artifacts from UserService and FriendshipService
-COPY --from=user_service_build_publish /app/publish ./UserService
-COPY --from=friendship_service_build_publish /app/publish ./FriendshipService
+# # Install supervisor
+# USER root
+# RUN apt-get update && \
+#     mkdir -p /var/lib/apt/lists/partial && \
+#     chown -R app:app /var/lib/apt/lists/partial && \
+#     apt-get install -y supervisor && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
 
-# Entry point for UserService
-CMD ["echo", "No specific command specified"]
+# USER app
+
+# # Create supervisor configuration
+# COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# # Entry point for supervisord
+# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 
-#
-## Multi-stage Dockerfile for UserService and FriendshipService
+
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# Dockerfile for USERSERVICE
 #
 ## Build stage
-#FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ #FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ #ARG BUILD_CONFIGURATION=Release
+ #WORKDIR /src
+#
+ #COPY ["Microservices/UserService/UserService.csproj", "UserService/"]
+ #COPY ["RabbitMQ/*.csproj", "RabbitMQ/"]
+ #RUN dotnet restore "UserService/UserService.csproj"
+ #RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+#
+## COPY . .
+#
+## # Build UserService
+ #RUN dotnet build "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+#
+## # Build RabbitMQ project
+ #WORKDIR "/src/RabbitMQ"
+ #RUN dotnet build "Rabbit.csproj" -c $BUILD_CONFIGURATION -o /app/build-rabbit
+#
+## # Publish stage
+ #FROM build AS publish
+ #ARG BUILD_CONFIGURATION=Release
+ #WORKDIR "/src"
+ #RUN dotnet publish "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+#
+## # Final stage
+ #FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+ #USER app
+ #WORKDIR /app
+ #EXPOSE 8080
+#
+## # Copy published artifacts from UserService
+ #COPY --from=publish /app/publish .
+#
+## # Add a specific tag to differentiate between builds
+ #ARG SERVICE_VERSION=latest
+ #ENV SERVICE_VERSION=${SERVICE_VERSION}
+#
+## # Entry point for UserService
+ #ENTRYPOINT ["dotnet", "UserService.dll"]
+
+
+
+
+# FRIENDSHIP SERVICE
+# Build stage
+#FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 #ARG BUILD_CONFIGURATION=Release
 #WORKDIR /src
 #
-## Copy the entire solution
+#COPY ["Microservices/FriendshipService/FriendshipService.csproj", "FriendshipService/"]
+#COPY ["RabbitMQ/*.csproj", "RabbitMQ/"]
+#RUN dotnet restore "FriendshipService/FriendshipService.csproj"
+#RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+#
 #COPY . .
 #
-## Restore dependencies and build UserService
-#WORKDIR "/src/Microservices/UserService"
-#RUN dotnet restore
-#RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build-user
-#RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish-user /p:UseAppHost=false
+## Build FriendshipService
+#RUN dotnet build "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 #
-## Restore dependencies and build FriendshipService
-#WORKDIR "/src/Microservices/FriendshipService"
-#RUN dotnet restore
-#RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build-friendship
-#RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish-friendship /p:UseAppHost=false
+## Build RabbitMQ project
+#WORKDIR "/src/RabbitMQ"
+#RUN dotnet build "Rabbit.csproj" -c $BUILD_CONFIGURATION -o /app/build-rabbit
 #
-## Runtime stage
+## Publish stage
+#FROM build AS publish
+#ARG BUILD_CONFIGURATION=Release
+#WORKDIR "/src"
+#RUN dotnet publish "Microservices/FriendshipService/FriendshipService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+#
+## Final stage
 #FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 #USER app
 #WORKDIR /app
 #EXPOSE 8080
 #
-## Copy published artifacts from UserService and FriendshipService
-#COPY --from=build /app/publish-user ./UserService
-#COPY --from=build /app/publish-friendship ./FriendshipService
+## Copy published artifacts from FriendshipService
+#COPY --from=publish /app/publish .
 #
-## Entry point for UserService (you can customize this as needed)
-#CMD ["echo", "No specific command specified"]
+## Add a specific tag to differentiate between builds
+#ARG SERVICE_VERSION=latest
+#ENV SERVICE_VERSION=${SERVICE_VERSION}
+#
+## Entry point for FriendshipService
+#ENTRYPOINT ["dotnet", "FriendshipService.dll"]
+
+
+
+#
+#
+## USER SERVICE DOCKERFILE
+#
+## Build stage
+#FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+#ARG BUILD_CONFIGURATION=Release
+#WORKDIR /src
+#
+#COPY ["Microservices/UserService/UserService.csproj", "UserService/"]
+#COPY ["RabbitMQ/*.csproj", "RabbitMQ/"]
+#RUN dotnet restore "UserService/UserService.csproj"
+#RUN dotnet restore "RabbitMQ/Rabbit.csproj"
+#
+#COPY . .
+#
+## Build FriendshipService
+#RUN dotnet build "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+#
+## Build RabbitMQ project
+#WORKDIR "/src/RabbitMQ"
+#RUN dotnet build "Rabbit.csproj" -c $BUILD_CONFIGURATION -o /app/build-rabbit
+#
+## Publish stage
+#FROM build AS publish
+#ARG BUILD_CONFIGURATION=Release
+#WORKDIR "/src"
+#RUN dotnet publish "Microservices/UserService/UserService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+#
+## Final stage
+#FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+#USER app
+#WORKDIR /app
+#EXPOSE 8080
+#
+## Copy published artifacts from FriendshipService
+#COPY --from=publish /app/publish .
+#
+## Add a specific tag to differentiate between builds
+#ARG SERVICE_VERSION=latest
+#ENV SERVICE_VERSION=${SERVICE_VERSION}
+#
+## Entry point for FriendshipService
+#ENTRYPOINT ["dotnet", "UserService.dll"]
+#
+
+
+
+## User DB
+#
+#FROM mcr.microsoft.com/mssql/server:2022-latest
+#
+## Set environment variables
+#ENV SA_PASSWORD="abcDEF123" \
+    #ACCEPT_EULA="Y"
+#
+## Copy your data into the image
+#COPY ./Microservices/UserService/data /var/opt/mssql/data
+#COPY ./Microservices/UserService/log /var/mssql/log
+#COPY ./Microservices/UserService/secrets /var/opt/mssql/secrets
+
+
+# Friendship DB
+
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+# Set environment variables
+ENV SA_PASSWORD="test@123" \
+    ACCEPT_EULA="Y"
+
+# Copy your data into the image
+COPY ./Microservices/FriendshipService/data /var/opt/mssql/data
+COPY ./Microservices/FriendshipService/log /var/mssql/log
+COPY ./Microservices/FriendshipService/secrets /var/opt/mssql/secret

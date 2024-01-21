@@ -4,9 +4,9 @@ metadata:
   name: user-db-pv
 spec:
   capacity:
-    storage: 2Gi  # Set the desired storage size
+    storage: 2Gi # Set the desired storage size
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: ././././Microservices/UserService/data # Replace with the path on the host where data is stored
+    path: /opt/mssql/data # Replace with the path on the host where data is stored

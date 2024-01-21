@@ -4,6 +4,7 @@ using Ocelot.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Ocelot.Provider.Kubernetes;
 
 namespace ApiGateway
 {

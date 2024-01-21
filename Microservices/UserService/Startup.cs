@@ -23,16 +23,17 @@ namespace UserService
         {
 
             services.AddDbContext<UserDBContext>(options =>
-            options.UseSqlServer("Server=host.docker.internal,1401;Database=user_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
+            options.UseSqlServer("Server=tcp:user-db,1433;User ID=sa;Database=user_service;User=sa;Password=test@123;TrustServerCertificate=true", sqlServerOption => sqlServerOption.EnableRetryOnFailure(10, TimeSpan.FromSeconds(15), null)));
             var rabbitMQConfig = Configuration.GetSection("RabbitMQ").Get<RabbitMQConfiguration>();
 
             var connectionFactory = new ConnectionFactory
             {
-                HostName = "host.docker.internal",
+                HostName = "rabbitmq",
                 UserName = "guest",
                 Password = "guest",
                 Port = 5672
             };
+            Console.WriteLine(connectionFactory);
 
             var connection = connectionFactory.CreateConnection();
 

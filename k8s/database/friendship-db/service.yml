@@ -7,6 +7,6 @@ spec:
     app: friendship-db
   ports:
     - protocol: TCP
-      port: 1402  # External entities can connect to this port
+      port: 1433  # External entities can connect to this port
       targetPort: 1433  # This is the port on the pods matched by the selector
   type: ClusterIP

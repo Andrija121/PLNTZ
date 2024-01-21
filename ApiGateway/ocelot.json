@@ -12,15 +12,18 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service", //user-service
-          "Port": 8080
+          "Host": "userservice", //userservice
+          "Port": 8081
         }
       ],
-      "DownstreamPathTemplate": "/api/User"
-    },
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+        "DownstreamPathTemplate": "/api/User"
+      },
     {
       "UpstreamPathTemplate": "/api/User/add-friend",
-      "UpstreamHttpMethod": ["Post" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "AuthenticationOptions": {
         "AllowedScopes": [],
         "AuthenticationProviderKey": "ProviderKey"
@@ -29,10 +32,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service", //user-service
-          "Port": 8080
+          "Host": "userservice", //userservice
+          "Port": 8081
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/User/add-friend"
     },
     {
@@ -46,10 +52,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service", //user-service
-          "Port": 8080
+          "Host": "userservice", //userservice
+          "Port": 8081
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/User/country/{country}"
     },
     {
@@ -63,10 +72,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service", //user-service
-          "Port": 8080
+          "Host": "userservice", //userservice
+          "Port": 8081
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/User/city/{city}"
     },
     {
@@ -80,10 +92,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-service", //user-service
-          "Port": 8080
+          "Host": "userservice", //userservice
+          "Port": 8081
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/User/{authzId}"
     },
     {
@@ -97,10 +112,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service (Get Friends)
-          "Port": 8080
+          "Host": "friendshipservice", //friendshipservice (Get Friends)
+          "Port": 8082
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/Friendship/{userId}"
     },
     {
@@ -114,10 +132,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service (Get Pending Friends)
-          "Port": 8080
+          "Host": "friendshipservice", //friendshipservice (Get Pending Friends)
+          "Port": 8082
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/Friendship/pending/{userId}"
     },
     {
@@ -131,10 +152,13 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service (send request)
-          "Port": 8080
+          "Host": "friendshipservice", //friendshipservice (send request)
+          "Port": 8082
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/Friendship/send-request"
     },
     {
@@ -148,16 +172,18 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "friendship-service", //friendship-service (respond-request)
-          "Port": 8080
+          "Host": "friendshipservice", //friendshipservice (respond-request)
+          "Port": 8082
         }
       ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
       "DownstreamPathTemplate": "/api/Friendship/respond-request/{friendshipId}"
     }
   ],
 
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001",
     "RequestIdKey": "OcRequestId",
     "AdministrationPath": "/admin",
     "CorsOptions": {
