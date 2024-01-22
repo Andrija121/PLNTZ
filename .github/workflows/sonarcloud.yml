@@ -44,5 +44,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
+          foreach ($project in Get-ChildItem -Recurse -Filter *.csproj) {
+          dotnet build $project.FullName
+          }
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Andrija121_PLNTZ" /o:"andrija121" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          foreach ($project in Get-ChildItem -Recurse -Filter *.csproj) {
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          }
